@@ -2,6 +2,8 @@
 
     Copyright : Frank Schwidom, 2017, schwidom@gmx.net
 
+    This file is part of the ansi-escape-color-filter software.
+
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
@@ -123,6 +125,8 @@ private:
   addOption( {"-gg"}, {"--greyify"}, {""});
   addOption( {"-fbw"}, {"--force-black-white"}, {""});
   addOption( {"-fwb"}, {"--force-white-black"}, {""});
+  addOption( {"-dfc"}, {"--drop-foreground-color"}, {""});
+  addOption( {"-dbc"}, {"--drop-background-color"}, {""});
  }
 
  struct OptionShort

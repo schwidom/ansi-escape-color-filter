@@ -2,6 +2,8 @@
 
     Copyright : Frank Schwidom, 2017, schwidom@gmx.net
 
+    This file is part of the ansi-escape-color-filter software.
+
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
@@ -80,6 +82,8 @@ private:
  bool m_greyify;
  bool m_forceBW;
  bool m_forceWB;
+ bool m_dropFG;
+ bool m_dropBG;
  
 public:
 
@@ -98,6 +102,8 @@ public:
   m_greyify= Globals::instance().hasOption( "--greyify");
   m_forceBW= Globals::instance().hasOption( "--force-black-white");
   m_forceWB= Globals::instance().hasOption( "--force-white-black");
+  m_dropFG= Globals::instance().hasOption( "--drop-foreground-color");
+  m_dropBG= Globals::instance().hasOption( "--drop-background-color");
  }
 
 private:
@@ -251,6 +257,40 @@ public:
     }
    }
 
+   if( m_dropFG) 
+   {
+    // for( auto & val : m_ansi_command_vector)
+    for( auto it = m_ansi_command_vector.begin(); it != m_ansi_command_vector.end(); ++it)
+    {
+     const auto & val = *it;
+
+     if( 2 != val.at( 0).command.size()) continue;
+     // if( '9' == val.at( 0).command.at( 1)) continue;
+     switch( val.at( 0).command.at( 0))
+     {
+      case '3' : m_ansi_command_vector.erase( it); --it; break;
+      // TODO : 90 - 97
+     }
+    }
+   }
+
+   if( m_dropBG) 
+   {
+    // for( auto & val : m_ansi_command_vector)
+    for( auto it = m_ansi_command_vector.begin(); it != m_ansi_command_vector.end(); ++it)
+    {
+     const auto & val = *it;
+
+     if( 2 != val.at( 0).command.size()) continue;
+     // if( '9' == val.at( 0).command.at( 1)) continue;
+     switch( val.at( 0).command.at( 0))
+     {
+      case '4' : m_ansi_command_vector.erase( it); --it; break;
+      // TODO : 100 - 107
+     }
+    }
+   }
+
    if( m_forceBW) 
    {
     for( auto & val : m_ansi_command_vector)
@@ -354,8 +394,9 @@ public:
    }
 
 
+   if( ! m_ansi_command_vector.empty())
    {
-    assert( ! m_ansi_command_vector.empty());
+    // assert( ! m_ansi_command_vector.empty());
 
     std::ostringstream oss;
 
@@ -378,6 +419,13 @@ public:
     // m_transmitter.setEscapeStateChars( "");
     m_transmitter.setEscapeStateChars( oss.str());
    }
+   else // m_ansi_command_vector.empty()
+   {
+    assert( m_dropFG || m_dropBG);
+    
+    m_transmitter.setEscapeStateChars("");
+   }
+
   }
 
   m_transmitter.state_escape_reset();
