@@ -84,6 +84,8 @@ private:
  bool m_forceWB;
  bool m_dropFG;
  bool m_dropBG;
+ bool m_toggleBW;
+ bool m_toggleBWisBlackOnWhite= true;
  
 public:
 
@@ -104,6 +106,7 @@ public:
   m_forceWB= Globals::instance().hasOption( "--force-white-black");
   m_dropFG= Globals::instance().hasOption( "--drop-foreground-color");
   m_dropBG= Globals::instance().hasOption( "--drop-background-color");
+  m_toggleBW= Globals::instance().hasOption( "--toggle-black-white");
  }
 
 private:
@@ -257,6 +260,36 @@ public:
     }
    }
 
+   if( m_toggleBW)
+   { 
+    for( auto it = m_ansi_command_vector.begin(); it != m_ansi_command_vector.end(); ++it)
+    {
+     auto & val = *it;
+
+     if( 2 != val.at( 0).command.size()) continue;
+     // if( '9' == val.at( 0).command.at( 1)) continue;
+
+     auto c0 = val.at( 0).command.at( 0);
+     if( '3' == c0 || '4' == c0)
+     {
+      if( m_toggleBWisBlackOnWhite)
+      {
+       val = {{"30"}};
+       ++it; 
+       it= m_ansi_command_vector.insert( it, {{"47"}});
+      }
+      else
+      {
+       val = {{"37"}};
+       ++it; 
+       it= m_ansi_command_vector.insert( it, {{"40"}});
+      }
+      // TODO : 90 - 97
+      // TODO : 100 - 107
+     }
+    }
+   }
+
    if( m_dropFG) 
    {
     // for( auto & val : m_ansi_command_vector)
@@ -393,7 +426,6 @@ public:
     }
    }
 
-
    if( ! m_ansi_command_vector.empty())
    {
     // assert( ! m_ansi_command_vector.empty());
@@ -426,6 +458,22 @@ public:
     m_transmitter.setEscapeStateChars("");
    }
 
+  }
+
+  if( 0) // NOTE: experimental
+  {
+   m_transmitter.readAhead2EscapeStateChars();
+   m_transmitter.setRefeedPoint( 1);
+  }
+
+  if( m_toggleBW) // NOTE only when sequence follows non escape
+  {
+   m_transmitter.readAhead2EscapeStateChars();
+   if( Chars::esc != m_transmitter.getEscapeStateChars().back())
+   {
+    m_toggleBWisBlackOnWhite = !m_toggleBWisBlackOnWhite;
+   }
+   m_transmitter.setRefeedPoint( 1);
   }
 
   m_transmitter.state_escape_reset();

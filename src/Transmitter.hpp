@@ -129,7 +129,7 @@ public:
  bool state_escape() { return m_state_escape;}
 
  void state_escape_reset() // string ist ggf. modifiziert
- { // equals: state_escape_reset( 0)
+ { // equals: setRefeedPoint( 0) without m_state_escape = false;
 
   m_state_escape = false;
  }

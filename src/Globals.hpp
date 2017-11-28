@@ -81,6 +81,9 @@ public:
   if( m_commandLineArguments.find( {"--help"}) != m_commandLineArguments.end() )
   {
    std::cerr << "usage: " << std::endl;
+   std::cerr << " <cursestool> | " << m_programName << " <options> " << std::endl;
+   std::cerr << " to change the colored output" << std::endl;
+   std::cerr << std::endl;
    std::cerr << m_programName << ", the \"ansi escape color filter\", has the following options: " << std::endl;
    
    size_t w1= 0, w2= 0, w3= 0;
@@ -127,6 +130,7 @@ private:
   addOption( {"-fwb"}, {"--force-white-black"}, {""});
   addOption( {"-dfc"}, {"--drop-foreground-color"}, {""});
   addOption( {"-dbc"}, {"--drop-background-color"}, {""});
+  addOption( {"-tbw"}, {"--toggle-black-white"}, {"toggles black white per colorchange (experimental)"});
  }
 
  struct OptionShort
