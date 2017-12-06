@@ -86,6 +86,12 @@ private:
  bool m_dropBG;
  bool m_toggleBW;
  bool m_toggleBWisBlackOnWhite= true;
+ bool m_NoBold;
+ bool m_NoFaint;
+ bool m_NoItalic;
+ bool m_NoUnderline;
+ bool m_NoSlowBlink;
+ bool m_NoRapidBlink;
  
 public:
 
@@ -107,6 +113,19 @@ public:
   m_dropFG= Globals::instance().hasOption( "--drop-foreground-color");
   m_dropBG= Globals::instance().hasOption( "--drop-background-color");
   m_toggleBW= Globals::instance().hasOption( "--toggle-black-white");
+
+  m_NoBold       = Globals::instance().hasOption( "--no-bold");
+  m_NoFaint      = Globals::instance().hasOption( "--no-faint");
+  m_NoItalic     = Globals::instance().hasOption( "--no-italic");
+  m_NoUnderline  = Globals::instance().hasOption( "--no-underline");
+  m_NoSlowBlink  = Globals::instance().hasOption( "--no-slow-blink");
+  m_NoRapidBlink = Globals::instance().hasOption( "--no-rapid-blink");
+
+  if( Globals::instance().hasOption( "--no-blink"))
+  {
+   m_NoSlowBlink = true;
+   m_NoRapidBlink = true;
+  }
  }
 
 private:
@@ -290,6 +309,86 @@ public:
     }
    }
 
+    assert( m_dropFG || m_dropBG || m_NoBold || m_NoFaint || m_NoItalic || m_NoUnderline || m_NoSlowBlink || m_NoRapidBlink );
+
+   if( m_NoBold) 
+   {
+    for( auto it = m_ansi_command_vector.begin(); it != m_ansi_command_vector.end(); ++it)
+    {
+     const auto & val = *it;
+
+     if( "1" == val.at( 0).command)
+     {
+      m_ansi_command_vector.erase( it); --it;
+     }
+    }
+   }
+
+   if( m_NoFaint) 
+   {
+    for( auto it = m_ansi_command_vector.begin(); it != m_ansi_command_vector.end(); ++it)
+    {
+     const auto & val = *it;
+
+     if( "2" == val.at( 0).command)
+     {
+      m_ansi_command_vector.erase( it); --it;
+     }
+    }
+   }
+
+   if( m_NoItalic) 
+   {
+    for( auto it = m_ansi_command_vector.begin(); it != m_ansi_command_vector.end(); ++it)
+    {
+     const auto & val = *it;
+
+     if( "3" == val.at( 0).command)
+     {
+      m_ansi_command_vector.erase( it); --it;
+     }
+    }
+   }
+
+   if( m_NoUnderline) 
+   {
+    for( auto it = m_ansi_command_vector.begin(); it != m_ansi_command_vector.end(); ++it)
+    {
+     const auto & val = *it;
+
+     if( "4" == val.at( 0).command)
+     {
+      m_ansi_command_vector.erase( it); --it;
+     }
+    }
+   }
+
+   if( m_NoSlowBlink) 
+   {
+    for( auto it = m_ansi_command_vector.begin(); it != m_ansi_command_vector.end(); ++it)
+    {
+     const auto & val = *it;
+
+     if( "5" == val.at( 0).command)
+     {
+      m_ansi_command_vector.erase( it); --it;
+     }
+    }
+   }
+
+   if( m_NoRapidBlink) 
+   {
+    for( auto it = m_ansi_command_vector.begin(); it != m_ansi_command_vector.end(); ++it)
+    {
+     const auto & val = *it;
+
+     if( "6" == val.at( 0).command)
+     {
+      m_ansi_command_vector.erase( it); --it;
+     }
+    }
+   }
+
    if( m_dropFG) 
    {
     // for( auto & val : m_ansi_command_vector)
@@ -453,7 +552,7 @@ public:
    }
    else // m_ansi_command_vector.empty()
    {
-    assert( m_dropFG || m_dropBG);
+    assert( m_dropFG || m_dropBG || m_NoBold || m_NoFaint || m_NoItalic || m_NoUnderline || m_NoSlowBlink || m_NoRapidBlink );
     
     m_transmitter.setEscapeStateChars("");
    }

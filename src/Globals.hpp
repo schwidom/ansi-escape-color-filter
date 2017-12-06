@@ -80,11 +80,15 @@ public:
 
   if( m_commandLineArguments.find( {"--help"}) != m_commandLineArguments.end() )
   {
+   std::cerr << "" << std::endl;
+   std::cerr << "The Ansi Escape Color Filter (aecf), Frank Schwidom, 2017, schwidom@gmx.net " << std::endl;
+   std::cerr << "" << std::endl;
    std::cerr << "usage: " << std::endl;
-   std::cerr << " <cursestool> | " << m_programName << " <options> " << std::endl;
-   std::cerr << " to change the colored output" << std::endl;
+   std::cerr << m_programName << " -h " << std::endl;
+   std::cerr << m_programName << " --help " << std::endl;
+   std::cerr << " <cursestool> | " << m_programName << " <options> # to change the colored output " << std::endl;
    std::cerr << std::endl;
-   std::cerr << m_programName << ", the \"ansi escape color filter\", has the following options: " << std::endl;
+   std::cerr << m_programName << ", the \"Ansi Escape Color Filter\", has the following options: " << std::endl;
    
    size_t w1= 0, w2= 0, w3= 0;
 
@@ -125,7 +129,14 @@ private:
   addOption( {"-dbg"}, {"--darker-bg"}, {""});
   addOption( {"-lfg"}, {"--lighter-fg"}, {""});
   addOption( {"-lbg"}, {"--lighter-bg"}, {""});
-  addOption( {"-gg"}, {"--greyify"}, {""});
+  addOption( {"-nb"}, {"--no-bold"}, {"drops CSI 1 m"});
+  addOption( {"-nf"}, {"--no-faint"}, {"drops CSI 2 m"});
+  addOption( {"-ni"}, {"--no-italic"}, {"drops CSI 3 m"});
+  addOption( {"-nu"}, {"--no-underline"}, {"drops CSI 4 m"});
+  addOption( {"-nsb"}, {"--no-slow-blink"}, {"drops CSI 5 m"});
+  addOption( {"-nrb"}, {"--no-rapid-blink"}, {"drops CSI 6 m"});
+  addOption( {"-nbl"}, {"--no-blink"}, {"drops CSI 5 m and CSI 6  m"});
+  addOption( {"-gg"}, {"--greyify"}, {"only with --output-true-color"});
   addOption( {"-fbw"}, {"--force-black-white"}, {""});
   addOption( {"-fwb"}, {"--force-white-black"}, {""});
   addOption( {"-dfc"}, {"--drop-foreground-color"}, {""});
