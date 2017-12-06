@@ -309,8 +309,6 @@ public:
     }
    }
 
-    assert( m_dropFG || m_dropBG || m_NoBold || m_NoFaint || m_NoItalic || m_NoUnderline || m_NoSlowBlink || m_NoRapidBlink );
-
    if( m_NoBold) 
    {
     for( auto it = m_ansi_command_vector.begin(); it != m_ansi_command_vector.end(); ++it)
