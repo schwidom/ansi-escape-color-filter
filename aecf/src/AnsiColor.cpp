@@ -38,7 +38,7 @@
 
 #include <stdexcept> // invalid_argument
 
-#include "../src_tools/string.hpp" // stringAsHex
+#include "../src_tools/string.hpp" // tools::
 
 void AnsiColor::correctBounds()
 {
@@ -83,7 +83,7 @@ void AnsiColor::set7classic(char c)
     case '6': setRGB( 0, 1, 1); break; // cyan
     case '7': setRGB( 1, 1, 1); break; // white
     default:
-      throw std::invalid_argument( std::string(__func__) + " : invalid character " + stringAsHex( std::string{c}));
+      throw std::invalid_argument( std::string(__func__) + " : invalid character " + tools::stringAsHex( std::string{c}));
     }
 }
 

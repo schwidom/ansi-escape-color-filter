@@ -39,8 +39,6 @@
 #include <string>
 #include <vector>
 
-#include <stdexcept>
-
 #include <cstdlib> // exit
 
 class Globals

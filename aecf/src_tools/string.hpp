@@ -34,9 +34,9 @@
 
 #pragma once
 
-#include <iostream>
-#include <sstream>
 #include <string>
+
+namespace tools {
 
 void outputStringHex( std::string s);
 
@@ -46,3 +46,4 @@ int string2int( std::string s);
 
 std::string int2string( int i);
 
+}

@@ -34,6 +34,11 @@
 
 #include "string.hpp"
 
+#include <iostream>
+#include <sstream>
+
+namespace tools {
+
 void outputStringHex(std::string s)
 {
   for( int i : s)
@@ -71,4 +76,6 @@ std::string int2string(int i)
   std::ostringstream oss;
   oss << i;
   return oss.str();
+}
+
 }

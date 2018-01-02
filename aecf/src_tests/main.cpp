@@ -38,9 +38,6 @@
 #include "../src/Transmitter.hpp"
 #include "../src/AnsiColor.hpp"
 
-#include <iostream>
-#include <iomanip>
-
 int main( int argc, char** argv)
 {
 

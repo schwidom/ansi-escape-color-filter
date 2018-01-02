@@ -46,7 +46,7 @@
 #include <cctype>
 
 #include "../src_tools/breakpoint.hpp" // BREAK
-#include "../src_tools/string.hpp" // outputStringHex, stringAsHex, string2int, int2string
+#include "../src_tools/string.hpp" // tools::
 
 Parser::Parser(Transmitter &transmitter)
   : m_transmitter(transmitter)
@@ -83,7 +83,7 @@ uint Parser::remainingParameters()
 {
   const auto & current_filling_command = m_ansi_command_vector.back();
   std::string s = current_filling_command.at( 0).command; // at least this exists, the rest is coming
-  int is= string2int( s);
+  int is= tools::string2int( s);
 
   // std::cerr << "remainingParameters " << s << std::endl;
 
@@ -452,6 +452,9 @@ void Parser::handleCurrentESC() throw( UnwindOnUnexpectedCharacter, UnwindOnAllD
             if( is_set)
               {
                 auto rgb = ac->get82truecolor();
+
+                using namespace tools;
+
                 val = { {std::string({ c0, '8'})}, {"2"}, {int2string(rgb.r)}, {int2string(rgb.g)}, {int2string(rgb.b)}};
               }
           }

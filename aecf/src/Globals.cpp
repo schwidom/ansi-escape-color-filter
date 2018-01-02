@@ -39,6 +39,8 @@
 #include <iostream>
 #include <utility>
 
+#include <stdexcept> // logic_error
+
 Globals &Globals::instance()
 {
   static Globals ret;
