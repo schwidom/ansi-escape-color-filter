@@ -40,15 +40,13 @@
 #include <iostream>
 #include <string>
 
-using TransmitterStd = Transmitter<decltype(std::cin), decltype(std::cout)>;
-
 int main( int argc, char** argv)
 {
 
  Globals::instance().parseCommandLine( argc, argv);
 
- TransmitterStd transmitter(std::cin, std::cout);
- Parser<TransmitterStd> parser( transmitter);
+ Transmitter transmitter(std::cin, std::cout);
+ Parser parser( transmitter);
 
  while( true)
  {

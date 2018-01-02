@@ -17,6 +17,11 @@ cmake_print_variables( ${SRC_TOOLS_LIST})
 cmake_print_variables( ${CMAKE_CURRENT_BINARY_DIR})
 cmake_print_variables( ${CMAKE_CURRENT_SOURCE_DIR})
 
+# recommendas vim setting: "set tags=./tags;/"
+add_custom_target(tags
+ COMMAND ctags -R --c++-kinds=+p --fields=+iaS --extra=+q  ${CMAKE_CURRENT_SOURCE_DIR}
+ WORKING_DIRECTORY ..)
+
 add_executable( ${PROJECT_NAME} ${SRC_AECF_LIST} ${SRC_LIST} ${SRC_TOOLS_LIST})
 add_executable( tests ${SRC_TESTS_LIST} ${SRC_LIST} ${SRC_TOOLS_LIST})
 

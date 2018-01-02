@@ -48,16 +48,6 @@ extern "C" {
 #include <unistd.h>
 }
 
-template<class Tin, class Tout,
- class = 
- typename 
- std::enable_if< 
-  std::is_same< 
-   typename Tin::char_type, 
-   typename Tout::char_type 
-  >::value 
- >::type
->
 class Transmitter
 {
 private:
@@ -65,169 +55,36 @@ private:
 
 public:
 
- using char_type = typename Tin::char_type;
+ using char_type = char;
 
- Transmitter( Tin & istream, Tout & ostream)
-  : m_Istream(istream)
-  , m_Ostream(ostream)
-  , m_state_escape(false)
-  , m_refeedCharsEOF(true)
- {
- }
+ Transmitter( std::istream& istream, std::ostream& ostream);
 
- void flushEscapeStateChars()
- {
+ void flushEscapeStateChars();
 
-  if( m_state_escape)
-  { // yq8lk8yap9 
-   throw std::invalid_argument( std::string(__func__) + " : Transmitter is in escape state");
-  }
-
-  for( char_type c : m_escapeStateChars)
-  {
-   m_Ostream.put( c); // syjotvd1ve 
-  }
-
-  m_escapeStateChars.clear();
- }
-
- void transmitUpToESC()
- {
-
-  if( m_state_escape)
-  { // yq8lk8yap9 
-   throw std::invalid_argument( std::string(__func__) + " : Transmitter is in escape state");
-  }
-
-  flushEscapeStateChars();
-
-  while( true)
-  {
-
-   const char_type c = get_next_char();
-
-   if( eof())
-   {
-    break;
-   }
-  
-   if( Chars::esc == c)
-   {
-    m_state_escape= true;
-    m_escapeStateChars.push_back( c); // hdhqmq3yog
-    break;
-   }
-
-   m_Ostream.put( c); // syjotvd1ve
-  }
-  
-  return;
- }
+ void transmitUpToESC();
 
  bool eof() { return m_Istream.eof() && m_refeedCharsEOF;}
 
  bool state_escape() { return m_state_escape;}
 
- void state_escape_reset() // string ist ggf. modifiziert
- { // equals: setRefeedPoint( 0) without m_state_escape = false;
+ void state_escape_reset();
 
-  m_state_escape = false;
- }
+ void setRefeedPoint( unsigned long refeedStartPos, bool fromBeginning= false);
 
- void setRefeedPoint( unsigned long refeedStartPos, bool fromBeginning= false) // string ist ggf. modifiziert
- { 
+ const char_type readAhead2EscapeStateChars();
 
-  if( refeedStartPos > m_escapeStateChars.size())
-  {
-   throw std::invalid_argument( std::string(__func__) + 
-    " : refeedStartPos > m_escapeStateChars.size()");
-  }
+ const std::basic_string<char_type> & getEscapeStateChars() const;
 
-  ulong escapeStateCharsPointCut= 0; 
+ void setEscapeStateChars(std::basic_string<char_type> escapeStateChars);
 
-  {
-   if( fromBeginning)
-   {
-    escapeStateCharsPointCut= refeedStartPos;
-   }
-   else // !fromBeginning
-   {
-    escapeStateCharsPointCut= m_escapeStateChars.size() - refeedStartPos;
-   }
-  }
-
-  // kill( getpid(), SIGINT); // geht
-
-  if( debug) std::cout << "escapeStateCharsPointCut " << escapeStateCharsPointCut << std::endl;
-  if( debug) std::cout << "m_refeedChars " << m_refeedChars << std::endl;
-  if( debug) std::cout << "m_escapeStateChars " << m_escapeStateChars << std::endl;
-
-  m_refeedChars= m_escapeStateChars.substr( escapeStateCharsPointCut) + m_refeedChars;
-  m_refeedCharsEOF= ( 0 == m_refeedChars.size()); // 8gzynmxt6j
-
-  m_escapeStateChars.erase( escapeStateCharsPointCut);
-
-  if( debug) std::cout << "m_refeedChars " << m_refeedChars << std::endl;
-  if( debug) std::cout << "m_escapeStateChars " << m_escapeStateChars << std::endl;
- }
-
- const char_type readAhead2EscapeStateChars() 
- {
-  if( ! m_state_escape)
-  {
-   throw std::invalid_argument( std::string(__func__) + " : Transmitter is not in escape state");
-  }
-
-  Transmitter::char_type ret= get_next_char();
-
-  if( ! eof())
-  {
-   m_escapeStateChars.push_back( ret);
-  }
-
-  return ret;
- }
-
- const std::basic_string<char_type> & getEscapeStateChars() const
- {
-  return m_escapeStateChars;
- }
-
- void setEscapeStateChars(std::basic_string<char_type> escapeStateChars)
- {
-  m_escapeStateChars= escapeStateChars;
- }
-
- const std::basic_string<char_type> & getRefeedChars() const // 4 debug purposes
- {
-  return m_refeedChars;
- }
+ const std::basic_string<char_type> & getRefeedChars() const;
 
 private:
  
- char_type get_next_char() 
- {
-  char_type ret;
+ char_type get_next_char();
 
-  m_refeedCharsEOF= ( 0 == m_refeedChars.size()); // 8gzynmxt6j
-
-  if( ! m_refeedCharsEOF)
-  {
-   ret = m_refeedChars.at( 0);
-   m_refeedChars.erase( m_refeedChars.begin());
-  }
-  else
-  {
-   ret= m_Istream.get();
-  }
-
-  if( debug) std::cout << "get_next_char " << ret << std::endl;
-
-  return ret;
- }
-
- Tin& m_Istream;
- Tout& m_Ostream;
+ std::istream& m_Istream;
+ std::ostream& m_Ostream;
 
  bool m_state_escape;
 

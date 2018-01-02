@@ -42,7 +42,7 @@ void TestTransmitter::testStringComplete(std::string s, ulong readAheadCount, ul
   std::ostringstream oss;
   std::istringstream iss( s);
 
-  Transmitter<decltype( iss), decltype( oss)> transmitter( iss, oss);
+  Transmitter transmitter( iss, oss);
 
   if( debug) std::cout << "### start test ###" << std::endl;
   if( debug) std::cout << s << std::endl;
@@ -97,7 +97,7 @@ void TestTransmitter::test01()
   std::ostringstream oss;
   std::istringstream iss( s);
 
-  Transmitter<decltype( iss), decltype( oss)> transmitter( iss, oss);
+  Transmitter transmitter( iss, oss);
 
   transmitter.transmitUpToESC();
 

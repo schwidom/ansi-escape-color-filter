@@ -8,5 +8,5 @@ test -f tags2/2j36v4onzk/2j36v4onzk.txt || { echo >&2 '! test -f tags2/2j36v4onz
 mkdir -p aecf-debug
 ( cd aecf-debug
  cmake ../aecf
- make
+ make -j 8
 )
