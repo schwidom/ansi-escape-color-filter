@@ -51,15 +51,7 @@ private:
  uint8_t m_g= 0;
  uint8_t m_b= 0;
  
- void correctBounds()
- {
-  // if( m_r < 0) m_r = 0;
-  // if( m_g < 0) m_g = 0;
-  // if( m_b < 0) m_b = 0;
-  if( 255 < m_r) m_r = 255;
-  if( 255 < m_g) m_g = 255;
-  if( 255 < m_b) m_b = 255;
- }
+ void correctBounds();
 
  // uint8_t multiplicator_normal = 205;
  uint8_t multiplicator_normal = 255;
@@ -74,62 +66,16 @@ private:
 
  struct RGB_1 { uint8_t r; uint8_t g; uint8_t b;}; // TODO : use bool maybe (beware of bright modi)
 
- RGB_1 getRGB()
- {
-
-  auto ret =  RGB_1 
-  {
-   static_cast<uint8_t>( (m_r + ((1+ multiplicator_normal) >> 1)) / multiplicator_normal),
-   static_cast<uint8_t>( (m_g + ((1+ multiplicator_normal) >> 1)) / multiplicator_normal),
-   static_cast<uint8_t>( (m_b + ((1+ multiplicator_normal) >> 1)) / multiplicator_normal)
-  };
-
-  // TODO : beware of bright modi
-
-  if(ret.r > 1){ ret.r = 1;}
-  if(ret.g > 1){ ret.g = 1;}
-  if(ret.b > 1){ ret.b = 1;}
-
-  return ret;
- }
+ RGB_1 getRGB();
 
 public:
- void set7classic( char c)
- {
+ void set7classic( char c);
 
-  switch( c)
-  {
-   case '0': setRGB( 0, 0, 0); break; // black
-   case '1': setRGB( 1, 0, 0); break; // red
-   case '2': setRGB( 0, 1, 0); break; // green
-   case '3': setRGB( 1, 1, 0); break; // yellow
-   case '4': setRGB( 0, 0, 1); break; // blue
-   case '5': setRGB( 1, 0, 1); break; // magenta
-   case '6': setRGB( 0, 1, 1); break; // cyan
-   case '7': setRGB( 1, 1, 1); break; // white
-   default:
-    throw std::invalid_argument( std::string(__func__) + " : invalid character " + stringAsHex( std::string{c}));
-  }
- }
-
- char get7classic()
- {
-  auto colorBinary = getRGB();
-  uint8_t offset= static_cast<uint8_t>( 0    
-   + colorBinary.r * ( 1 << 0)
-   + colorBinary.g * ( 1 << 1)
-   + colorBinary.b * ( 1 << 2)
-  );
-  
-  return '0' + offset;
- }
+ char get7classic();
  
  struct RGB_256 { uint8_t r; uint8_t g; uint8_t b;}; // TODO : beware of bright modi
 
- RGB_256 get82truecolor() 
- {
-  return RGB_256{ m_r, m_g, m_b};
- }
+ RGB_256 get82truecolor();
 
  void darker()
  {
@@ -153,11 +99,6 @@ public:
  }
 */
 
- void greyify()
- {
-  auto avg = ( m_r + m_g + m_b / 3);
-  m_r= static_cast<uint8_t>( avg + 0.5 * (m_r - avg));
-  correctBounds();
- }
+ void greyify();
 
 };

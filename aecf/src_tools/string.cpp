@@ -1,4 +1,4 @@
-/* 
+/*
 
     Copyright : Frank Schwidom, 2017, schwidom@gmx.net
 
@@ -32,29 +32,43 @@
 
 */
 
-#pragma once 
+#include "string.hpp"
 
-#include "TestBase.hpp"
-
-#include "../src/Transmitter.hpp"
-
-#include <iostream>
-#include <sstream>
-#include <string>
-
-#include <cassert>
-
-class TestTransmitter : public TestBase
+void outputStringHex(std::string s)
 {
-private:
- bool debug= false;
+  for( int i : s)
+    {
+      std::cout << std::hex << "0x" << i << " ";
+    }
+  std::cout << std::endl;
+}
 
-public:
- 
- void testStringComplete( std::string s, ulong readAheadCount= 0, ulong pointCutFromEnd= 0, int expectedESChandlings= -1);
 
- void test01();
+std::string stringAsHex(std::string s)
+{
+  std::ostringstream oss;
 
- void runTest();
+  for( int i : s)
+    {
+      oss << std::hex << "0x" << i << " ";
+    }
 
-};
+  return oss.str();
+}
+
+
+int string2int(std::string s)
+{
+  std::istringstream iss(s);
+  int ret;
+  iss >> ret;
+  return ret;
+}
+
+
+std::string int2string(int i)
+{
+  std::ostringstream oss;
+  oss << i;
+  return oss.str();
+}

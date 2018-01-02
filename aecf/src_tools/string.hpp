@@ -38,39 +38,11 @@
 #include <sstream>
 #include <string>
 
-void outputStringHex( std::string s)
-{
- for( int i : s)
- {
-  std::cout << std::hex << "0x" << i << " ";
- }
- std::cout << std::endl;
-}
+void outputStringHex( std::string s);
 
-std::string stringAsHex( std::string s)
-{
- std::ostringstream oss;
+std::string stringAsHex( std::string s);
 
- for( int i : s)
- {
-  oss << std::hex << "0x" << i << " ";
- }
+int string2int( std::string s);
 
- return oss.str();
-}
-
-int string2int( std::string s) 
-{
- std::istringstream iss(s);
- int ret;
- iss >> ret;
- return ret;
-}
-
-std::string int2string( int i)
-{
- std::ostringstream oss;
- oss << i;
- return oss.str();
-}
+std::string int2string( int i);
 

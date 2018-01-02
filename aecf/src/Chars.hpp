@@ -38,9 +38,6 @@
 
 class Chars {
 public:
- static const char esc = 033;
- static std::string str_esc;
+ static const char esc;
+ static const std::string str_esc;
 };
-
-std::string Chars::str_esc = std::string( 1, Chars::esc);
-

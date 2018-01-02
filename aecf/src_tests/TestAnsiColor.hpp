@@ -47,21 +47,6 @@ class TestAnsiColor : public TestBase
 
 public: 
 
- void runTest()
- {
-  std::cout << __FILE__ << std::endl;
-
-  AnsiColor ac;
-
-  ac.set7classic( '0');
-  assert( '0' == ac.get7classic());
-
-  ac.set7classic( '3');
-  assert( '3' == ac.get7classic());
-
-  ac.set7classic( '7');
-  assert( '7' == ac.get7classic());
- };
-
+ void runTest();
 
 };

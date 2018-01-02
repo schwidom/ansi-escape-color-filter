@@ -1,4 +1,4 @@
-/* 
+/*
 
     Copyright : Frank Schwidom, 2017, schwidom@gmx.net
 
@@ -32,29 +32,20 @@
 
 */
 
-#pragma once 
+#include "TestAnsiColor.hpp"
 
-#include "TestBase.hpp"
-
-#include "../src/Transmitter.hpp"
-
-#include <iostream>
-#include <sstream>
-#include <string>
-
-#include <cassert>
-
-class TestTransmitter : public TestBase
+void TestAnsiColor::runTest()
 {
-private:
- bool debug= false;
+  std::cout << __FILE__ << std::endl;
 
-public:
- 
- void testStringComplete( std::string s, ulong readAheadCount= 0, ulong pointCutFromEnd= 0, int expectedESChandlings= -1);
+  AnsiColor ac;
 
- void test01();
+  ac.set7classic( '0');
+  assert( '0' == ac.get7classic());
 
- void runTest();
+  ac.set7classic( '3');
+  assert( '3' == ac.get7classic());
 
-};
+  ac.set7classic( '7');
+  assert( '7' == ac.get7classic());
+}

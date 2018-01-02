@@ -32,29 +32,33 @@
 
 */
 
-#pragma once 
-
-#include "TestBase.hpp"
-
+#include "../src/Chars.hpp"
+#include "../src/Parser.hpp"
 #include "../src/Transmitter.hpp"
+#include "../src/Globals.hpp"
 
 #include <iostream>
-#include <sstream>
 #include <string>
 
-#include <cassert>
+using TransmitterStd = Transmitter<decltype(std::cin), decltype(std::cout)>;
 
-class TestTransmitter : public TestBase
+int main( int argc, char** argv)
 {
-private:
- bool debug= false;
 
-public:
- 
- void testStringComplete( std::string s, ulong readAheadCount= 0, ulong pointCutFromEnd= 0, int expectedESChandlings= -1);
+ Globals::instance().parseCommandLine( argc, argv);
 
- void test01();
+ TransmitterStd transmitter(std::cin, std::cout);
+ Parser<TransmitterStd> parser( transmitter);
 
- void runTest();
+ while( true)
+ {
+  transmitter.transmitUpToESC();
+  parser.handleCurrentESC();
+  transmitter.flushEscapeStateChars();
 
-};
+  if(transmitter.eof()) break;
+ }
+
+ return 0;
+}
+

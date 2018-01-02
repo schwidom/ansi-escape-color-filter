@@ -1,4 +1,4 @@
-/* 
+/*
 
     Copyright : Frank Schwidom, 2017, schwidom@gmx.net
 
@@ -32,33 +32,6 @@
 
 */
 
-#include "Chars.hpp"
-#include "Parser.hpp"
-#include "Transmitter.hpp"
-#include "Globals.hpp"
+#include "TestBase.hpp"
 
-#include <iostream>
-#include <string>
-
-using TransmitterStd = Transmitter<decltype(std::cin), decltype(std::cout)>;
-
-int main( int argc, char** argv)
-{
-
- Globals::instance().parseCommandLine( argc, argv);
-
- TransmitterStd transmitter(std::cin, std::cout);
- Parser<TransmitterStd> parser( transmitter);
-
- while( true)
- {
-  transmitter.transmitUpToESC();
-  parser.handleCurrentESC();
-  transmitter.flushEscapeStateChars();
-
-  if(transmitter.eof()) break;
- }
-
- return 0;
-}
 

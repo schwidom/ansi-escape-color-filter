@@ -1,4 +1,4 @@
-/* 
+/*
 
     Copyright : Frank Schwidom, 2017, schwidom@gmx.net
 
@@ -32,29 +32,6 @@
 
 */
 
-#pragma once 
+#include "Parser.hpp"
 
-#include "TestBase.hpp"
 
-#include "../src/Transmitter.hpp"
-
-#include <iostream>
-#include <sstream>
-#include <string>
-
-#include <cassert>
-
-class TestTransmitter : public TestBase
-{
-private:
- bool debug= false;
-
-public:
- 
- void testStringComplete( std::string s, ulong readAheadCount= 0, ulong pointCutFromEnd= 0, int expectedESChandlings= -1);
-
- void test01();
-
- void runTest();
-
-};
