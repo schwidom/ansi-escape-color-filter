@@ -34,8 +34,12 @@
 
 #include "TestTransmitter.hpp"
 
+#include "../src/Transmitter.hpp"
 
+#include <iostream>
+#include <sstream>
 
+#include <cassert>
 
 void TestTransmitter::testStringComplete(std::string s, ulong readAheadCount, ulong pointCutFromEnd, int expectedESChandlings)
 {

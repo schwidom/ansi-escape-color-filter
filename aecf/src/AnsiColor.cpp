@@ -34,8 +34,11 @@
 
 #include "AnsiColor.hpp"
 
+#include <string>
 
+#include <stdexcept> // invalid_argument
 
+#include "../src_tools/string.hpp" // stringAsHex
 
 void AnsiColor::correctBounds()
 {

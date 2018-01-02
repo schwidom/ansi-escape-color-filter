@@ -36,13 +36,7 @@
 
 #include "TestBase.hpp"
 
-#include "../src/Transmitter.hpp"
-
-#include <iostream>
-#include <sstream>
 #include <string>
-
-#include <cassert>
 
 class TestTransmitter : public TestBase
 {

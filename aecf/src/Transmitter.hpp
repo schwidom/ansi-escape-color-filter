@@ -34,19 +34,8 @@
 
 #pragma once
 
-#include "Chars.hpp"
-
 #include <iostream>
-#include <stdexcept>
-#include <type_traits>
-#include <vector>
-
-#include <cassert>
-#include <csignal>
-
-extern "C" {
-#include <unistd.h>
-}
+#include <string>
 
 class Transmitter
 {
@@ -73,11 +62,11 @@ public:
 
  const char_type readAhead2EscapeStateChars();
 
- const std::basic_string<char_type> & getEscapeStateChars() const;
+ const std::string& getEscapeStateChars() const;
 
- void setEscapeStateChars(std::basic_string<char_type> escapeStateChars);
+ void setEscapeStateChars(std::string escapeStateChars);
 
- const std::basic_string<char_type> & getRefeedChars() const;
+ const std::string& getRefeedChars() const;
 
 private:
  
@@ -88,7 +77,7 @@ private:
 
  bool m_state_escape;
 
- std::basic_string<char_type>m_escapeStateChars;
- std::basic_string<char_type>m_refeedChars; // TODO : prove possible usage of ostringstream 4v1d02nrpn
+ std::string m_escapeStateChars;
+ std::string m_refeedChars; // TODO : prove possible usage of ostringstream 4v1d02nrpn
  bool m_refeedCharsEOF; // TODO : prove possible usage of ostringstream 4v1d02nrpn 
 };

@@ -34,13 +34,7 @@
 
 #pragma once
 
-#include <string>
-
-#include <stdexcept> // invalid_argument
-
 #include <cstdint> // ::uint8_t
-
-#include "../src_tools/string.hpp"
 
 class AnsiColor
 {

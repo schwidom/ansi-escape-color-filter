@@ -36,12 +36,6 @@
 
 #include "TestBase.hpp"
 
-#include "../src/AnsiColor.hpp"
-
-#include <iostream>
-
-#include <cassert>
-
 class TestAnsiColor : public TestBase
 {
 

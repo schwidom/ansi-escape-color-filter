@@ -35,20 +35,9 @@
 #pragma once
 
 #include "AnsiEscapeState.hpp"
-#include "Chars.hpp"
-#include "Globals.hpp"
 #include "Transmitter.hpp"
 
-#include <functional>
-#include <iostream>
-#include <sstream>
-#include <string>
 #include <vector>
-
-#include <cctype>
-
-#include "../src_tools/string.hpp" // outputStringHex, stringAsHex, string2int, int2string
-#include "../src_tools/breakpoint.hpp" // BREAK
 
 class Parser
 {

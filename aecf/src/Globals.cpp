@@ -34,7 +34,10 @@
 
 #include "Globals.hpp"
 
-
+#include <algorithm>
+#include <iomanip>
+#include <iostream>
+#include <utility>
 
 Globals &Globals::instance()
 {

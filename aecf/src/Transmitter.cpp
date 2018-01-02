@@ -34,7 +34,19 @@
 
 #include "Transmitter.hpp"
 
+#include "Chars.hpp"
 
+#include <type_traits>
+#include <vector>
+
+#include <stdexcept> // invalid_argument
+
+#include <cassert>
+#include <csignal>
+
+extern "C" {
+#include <unistd.h>
+}
 
 
 Transmitter::Transmitter(std::istream &istream, std::ostream &ostream)
@@ -43,7 +55,6 @@ Transmitter::Transmitter(std::istream &istream, std::ostream &ostream)
   , m_state_escape(false)
   , m_refeedCharsEOF(true)
 {
-  std::cout << 1;
 }
 
 void Transmitter::flushEscapeStateChars()
@@ -155,17 +166,17 @@ const Transmitter::char_type Transmitter::readAhead2EscapeStateChars()
   return ret;
 }
 
-const std::basic_string<Transmitter::char_type> &Transmitter::getEscapeStateChars() const
+const std::string& Transmitter::getEscapeStateChars() const
 {
   return m_escapeStateChars;
 }
 
-void Transmitter::setEscapeStateChars(std::basic_string<Transmitter::char_type> escapeStateChars)
+void Transmitter::setEscapeStateChars(std::string escapeStateChars)
 {
   m_escapeStateChars= escapeStateChars;
 }
 
-const std::basic_string<Transmitter::char_type> &Transmitter::getRefeedChars() const // 4 debug purposes
+const std::string& Transmitter::getRefeedChars() const // 4 debug purposes
 {
   return m_refeedChars;
 }

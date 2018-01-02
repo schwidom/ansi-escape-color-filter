@@ -34,8 +34,19 @@
 
 #include "Parser.hpp"
 
+#include "Chars.hpp"
+#include "Globals.hpp"
 
+#include <functional>
+#include <iostream>
+#include <sstream>
+#include <string>
 
+#include <cassert>
+#include <cctype>
+
+#include "../src_tools/breakpoint.hpp" // BREAK
+#include "../src_tools/string.hpp" // outputStringHex, stringAsHex, string2int, int2string
 
 Parser::Parser(Transmitter &transmitter)
   : m_transmitter(transmitter)

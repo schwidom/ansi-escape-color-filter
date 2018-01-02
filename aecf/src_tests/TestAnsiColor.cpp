@@ -34,6 +34,12 @@
 
 #include "TestAnsiColor.hpp"
 
+#include "../src/AnsiColor.hpp"
+
+#include <iostream>
+
+#include <cassert>
+
 void TestAnsiColor::runTest()
 {
   std::cout << __FILE__ << std::endl;
