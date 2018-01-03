@@ -1,4 +1,4 @@
-/* 
+/*
 
     Copyright : Frank Schwidom, 2017, schwidom@gmx.net
 
@@ -44,25 +44,25 @@
 int main( int argc, char** argv)
 {
 
- Globals::instance().parseCommandLine( MainArgs{ argc, argv});
+  Globals::instance().parseCommandLine( MainArgs { argc, argv});
 
- if( Globals::instance().hasOption( "--help"))
- {
-  std::cerr << Globals::instance().getAecfArguments().getHelp();
-  exit( 1);
- }
+  if( Globals::instance().getAecfArguments().hasOption( "--help"))
+  {
+    std::cerr << Globals::instance().getAecfArguments().getHelp();
+    exit( 1);
+  }
 
- Transmitter transmitter(std::cin, std::cout);
- Parser parser( transmitter);
+  Transmitter transmitter(std::cin, std::cout);
+  Parser parser( transmitter);
 
- while( true)
- {
-  transmitter.transmitUpToESC();
-  parser.handleCurrentESC();
-  transmitter.flushEscapeStateChars();
+  while( true)
+  {
+    transmitter.transmitUpToESC();
+    parser.handleCurrentESC();
+    transmitter.flushEscapeStateChars();
 
-  if(transmitter.eof()) break;
- }
+    if(transmitter.eof()) break;
+  }
 
- return 0;
+  return 0;
 }

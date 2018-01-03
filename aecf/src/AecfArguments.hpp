@@ -1,7 +1,7 @@
-/* 
+/*
 
     Copyright : Frank Schwidom, 2017, schwidom@gmx.net
-    
+
     This file is part of the ansi-escape-color-filter software.
 
     This program is free software: you can redistribute it and/or modify
@@ -51,40 +51,44 @@ public:
   std::string getHelp() const;
 
 private:
- struct OptionShort
- {
-  std::string value;
-  bool operator<(const OptionShort & os) const { return value < os.value;}
- };
+  struct OptionShort
+  {
+    std::string value;
+    bool operator<(const OptionShort & os) const {
+      return value < os.value;
+    }
+  };
 
- struct OptionLong
- {
-  std::string value;
-  bool operator<(const OptionLong & os) const { return value < os.value;}
- };
+  struct OptionLong
+  {
+    std::string value;
+    bool operator<(const OptionLong & os) const {
+      return value < os.value;
+    }
+  };
 
- struct OptionExplanation
- {
-  std::string value;
- };
+  struct OptionExplanation
+  {
+    std::string value;
+  };
 
- struct ExistingOption
- {
-  bool exists;
-  OptionLong optionLong;
- };
+  struct ExistingOption
+  {
+    bool exists;
+    OptionLong optionLong;
+  };
 
- ExistingOption optionExists( std::string optionName);
+  ExistingOption optionExists( std::string optionName);
 
- std::vector<OptionLong> m_options;
- std::map<OptionShort,OptionLong> m_optionsShort2Long;
- std::map<OptionLong,OptionShort> m_optionsLong2Short;
- std::map<OptionLong,OptionExplanation> m_optionsLong2Explanation;
+  std::vector<OptionLong> m_options;
+  std::map<OptionShort,OptionLong> m_optionsShort2Long;
+  std::map<OptionLong,OptionShort> m_optionsLong2Short;
+  std::map<OptionLong,OptionExplanation> m_optionsLong2Explanation;
 
- void addOption( OptionShort optionShort, OptionLong optionLong, OptionExplanation optionExplanation= {});
+  void addOption( OptionShort optionShort, OptionLong optionLong, OptionExplanation optionExplanation= {});
 
- std::string m_programName;
- std::vector<std::string> m_commandLine;
- std::set<OptionLong> m_commandLineArguments;
+  std::string m_programName;
+  std::vector<std::string> m_commandLine;
+  std::set<OptionLong> m_commandLineArguments;
 };
 

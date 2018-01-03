@@ -61,14 +61,14 @@ void Transmitter::flushEscapeStateChars()
 {
 
   if( m_state_escape)
-    { // yq8lk8yap9
-      throw std::invalid_argument( std::string(__func__) + " : Transmitter is in escape state");
-    }
+  { // yq8lk8yap9
+    throw std::invalid_argument( std::string(__func__) + " : Transmitter is in escape state");
+  }
 
   for( char_type c : m_escapeStateChars)
-    {
-      m_Ostream.put( c); // syjotvd1ve
-    }
+  {
+    m_Ostream.put( c); // syjotvd1ve
+  }
 
   m_escapeStateChars.clear();
 }
@@ -77,31 +77,31 @@ void Transmitter::transmitUpToESC()
 {
 
   if( m_state_escape)
-    { // yq8lk8yap9
-      throw std::invalid_argument( std::string(__func__) + " : Transmitter is in escape state");
-    }
+  { // yq8lk8yap9
+    throw std::invalid_argument( std::string(__func__) + " : Transmitter is in escape state");
+  }
 
   flushEscapeStateChars();
 
   while( true)
+  {
+
+    const char_type c = get_next_char();
+
+    if( eof())
     {
-
-      const char_type c = get_next_char();
-
-      if( eof())
-        {
-          break;
-        }
-
-      if( Chars::esc == c)
-        {
-          m_state_escape= true;
-          m_escapeStateChars.push_back( c); // hdhqmq3yog
-          break;
-        }
-
-      m_Ostream.put( c); // syjotvd1ve
+      break;
     }
+
+    if( Chars::esc == c)
+    {
+      m_state_escape= true;
+      m_escapeStateChars.push_back( c); // hdhqmq3yog
+      break;
+    }
+
+    m_Ostream.put( c); // syjotvd1ve
+  }
 
   return;
 }
@@ -116,22 +116,22 @@ void Transmitter::setRefeedPoint(unsigned long refeedStartPos, bool fromBeginnin
 {
 
   if( refeedStartPos > m_escapeStateChars.size())
-    {
-      throw std::invalid_argument( std::string(__func__) +
-                                   " : refeedStartPos > m_escapeStateChars.size()");
-    }
+  {
+    throw std::invalid_argument( std::string(__func__) +
+                                 " : refeedStartPos > m_escapeStateChars.size()");
+  }
 
   ulong escapeStateCharsPointCut= 0;
 
   {
     if( fromBeginning)
-      {
-        escapeStateCharsPointCut= refeedStartPos;
-      }
+    {
+      escapeStateCharsPointCut= refeedStartPos;
+    }
     else // !fromBeginning
-      {
-        escapeStateCharsPointCut= m_escapeStateChars.size() - refeedStartPos;
-      }
+    {
+      escapeStateCharsPointCut= m_escapeStateChars.size() - refeedStartPos;
+    }
   }
 
   // kill( getpid(), SIGINT); // geht
@@ -152,16 +152,16 @@ void Transmitter::setRefeedPoint(unsigned long refeedStartPos, bool fromBeginnin
 const Transmitter::char_type Transmitter::readAhead2EscapeStateChars()
 {
   if( ! m_state_escape)
-    {
-      throw std::invalid_argument( std::string(__func__) + " : Transmitter is not in escape state");
-    }
+  {
+    throw std::invalid_argument( std::string(__func__) + " : Transmitter is not in escape state");
+  }
 
   Transmitter::char_type ret= get_next_char();
 
   if( ! eof())
-    {
-      m_escapeStateChars.push_back( ret);
-    }
+  {
+    m_escapeStateChars.push_back( ret);
+  }
 
   return ret;
 }
@@ -188,14 +188,14 @@ Transmitter::char_type Transmitter::get_next_char()
   m_refeedCharsEOF= ( 0 == m_refeedChars.size()); // 8gzynmxt6j
 
   if( ! m_refeedCharsEOF)
-    {
-      ret = m_refeedChars.at( 0);
-      m_refeedChars.erase( m_refeedChars.begin());
-    }
+  {
+    ret = m_refeedChars.at( 0);
+    m_refeedChars.erase( m_refeedChars.begin());
+  }
   else
-    {
-      ret= m_Istream.get();
-    }
+  {
+    ret= m_Istream.get();
+  }
 
   if( debug) std::cout << "get_next_char " << ret << std::endl;
 

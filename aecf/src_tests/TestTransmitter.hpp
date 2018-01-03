@@ -1,4 +1,4 @@
-/* 
+/*
 
     Copyright : Frank Schwidom, 2017, schwidom@gmx.net
 
@@ -32,7 +32,7 @@
 
 */
 
-#pragma once 
+#pragma once
 
 #include "TestBase.hpp"
 
@@ -41,14 +41,14 @@
 class TestTransmitter : public TestBase
 {
 private:
- bool debug= false;
+  bool debug= false;
 
 public:
- 
- void testStringComplete( std::string s, ulong readAheadCount= 0, ulong pointCutFromEnd= 0, int expectedESChandlings= -1);
 
- void test01();
+  void testStringComplete( std::string s, ulong readAheadCount= 0, ulong pointCutFromEnd= 0, int expectedESChandlings= -1);
 
- void runTest();
+  void test01();
+
+  void runTest();
 
 };

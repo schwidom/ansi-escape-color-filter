@@ -55,16 +55,22 @@ AnsiColor::RGB_1 AnsiColor::getRGB()
 
   auto ret =  RGB_1
   {
-      static_cast<uint8_t>( (m_r + ((1+ multiplicator_normal) >> 1)) / multiplicator_normal),
-      static_cast<uint8_t>( (m_g + ((1+ multiplicator_normal) >> 1)) / multiplicator_normal),
-      static_cast<uint8_t>( (m_b + ((1+ multiplicator_normal) >> 1)) / multiplicator_normal)
-};
+    static_cast<uint8_t>( (m_r + ((1+ multiplicator_normal) >> 1)) / multiplicator_normal),
+    static_cast<uint8_t>( (m_g + ((1+ multiplicator_normal) >> 1)) / multiplicator_normal),
+    static_cast<uint8_t>( (m_b + ((1+ multiplicator_normal) >> 1)) / multiplicator_normal)
+  };
 
   // TODO : beware of bright modi
 
-  if(ret.r > 1){ ret.r = 1;}
-  if(ret.g > 1){ ret.g = 1;}
-  if(ret.b > 1){ ret.b = 1;}
+  if(ret.r > 1) {
+    ret.r = 1;
+  }
+  if(ret.g > 1) {
+    ret.g = 1;
+  }
+  if(ret.b > 1) {
+    ret.b = 1;
+  }
 
   return ret;
 }
@@ -73,18 +79,34 @@ void AnsiColor::set7classic(char c)
 {
 
   switch( c)
-    {
-    case '0': setRGB( 0, 0, 0); break; // black
-    case '1': setRGB( 1, 0, 0); break; // red
-    case '2': setRGB( 0, 1, 0); break; // green
-    case '3': setRGB( 1, 1, 0); break; // yellow
-    case '4': setRGB( 0, 0, 1); break; // blue
-    case '5': setRGB( 1, 0, 1); break; // magenta
-    case '6': setRGB( 0, 1, 1); break; // cyan
-    case '7': setRGB( 1, 1, 1); break; // white
-    default:
-      throw std::invalid_argument( std::string(__func__) + " : invalid character " + tools::stringAsHex( std::string{c}));
-    }
+  {
+  case '0':
+    setRGB( 0, 0, 0);
+    break; // black
+  case '1':
+    setRGB( 1, 0, 0);
+    break; // red
+  case '2':
+    setRGB( 0, 1, 0);
+    break; // green
+  case '3':
+    setRGB( 1, 1, 0);
+    break; // yellow
+  case '4':
+    setRGB( 0, 0, 1);
+    break; // blue
+  case '5':
+    setRGB( 1, 0, 1);
+    break; // magenta
+  case '6':
+    setRGB( 0, 1, 1);
+    break; // cyan
+  case '7':
+    setRGB( 1, 1, 1);
+    break; // white
+  default:
+    throw std::invalid_argument( std::string(__func__) + " : invalid character " + tools::stringAsHex( std::string {c}));
+  }
 }
 
 char AnsiColor::get7classic()
@@ -94,14 +116,14 @@ char AnsiColor::get7classic()
                                         + colorBinary.r * ( 1 << 0)
                                         + colorBinary.g * ( 1 << 1)
                                         + colorBinary.b * ( 1 << 2)
-                                        );
+                                      );
 
   return '0' + offset;
 }
 
 AnsiColor::RGB_256 AnsiColor::get82truecolor()
 {
-  return RGB_256{ m_r, m_g, m_b};
+  return RGB_256 { m_r, m_g, m_b};
 }
 
 void AnsiColor::greyify()

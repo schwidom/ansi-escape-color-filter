@@ -1,4 +1,4 @@
-/* 
+/*
 
     Copyright : Frank Schwidom, 2017, schwidom@gmx.net
 
@@ -43,59 +43,59 @@ class Parser
 {
 private:
 
- struct AnsiCommand
- {
-  std::string command;
- };
+  struct AnsiCommand
+  {
+    std::string command;
+  };
 
- std::vector<std::vector<AnsiCommand>> m_ansi_command_vector;
+  std::vector<std::vector<AnsiCommand>> m_ansi_command_vector;
 
- AnsiEscapeState m_AnsiEscapeState;
+  AnsiEscapeState m_AnsiEscapeState;
 
- struct UnwindOnUnexpectedCharacter
- {
- };
+  struct UnwindOnUnexpectedCharacter
+  {
+  };
 
- struct UnwindOnAllDone
- {
- };
+  struct UnwindOnAllDone
+  {
+  };
 
- bool m_outputInputSequences;
- bool m_invertColors;
- bool m_outputTrueColor;
- bool m_dfg;
- bool m_dbg;
- bool m_lfg;
- bool m_lbg;
- bool m_greyify;
- bool m_forceBW;
- bool m_forceWB;
- bool m_dropFG;
- bool m_dropBG;
- bool m_toggleBW;
- bool m_toggleBWisBlackOnWhite= true;
- bool m_NoBold;
- bool m_NoFaint;
- bool m_NoItalic;
- bool m_NoUnderline;
- bool m_NoSlowBlink;
- bool m_NoRapidBlink;
- 
+  bool m_outputInputSequences;
+  bool m_invertColors;
+  bool m_outputTrueColor;
+  bool m_dfg;
+  bool m_dbg;
+  bool m_lfg;
+  bool m_lbg;
+  bool m_greyify;
+  bool m_forceBW;
+  bool m_forceWB;
+  bool m_dropFG;
+  bool m_dropBG;
+  bool m_toggleBW;
+  bool m_toggleBWisBlackOnWhite= true;
+  bool m_NoBold;
+  bool m_NoFaint;
+  bool m_NoItalic;
+  bool m_NoUnderline;
+  bool m_NoSlowBlink;
+  bool m_NoRapidBlink;
+
 public:
 
- using char_type = Transmitter::char_type;
+  using char_type = Transmitter::char_type;
 
- Parser( Transmitter& transmitter);
+  Parser( Transmitter& transmitter);
 
 private:
 
- uint remainingParameters();
+  uint remainingParameters();
 
- void handleCurrentLeftBracket() throw( UnwindOnUnexpectedCharacter, UnwindOnAllDone);
+  void handleCurrentLeftBracket() throw( UnwindOnUnexpectedCharacter, UnwindOnAllDone);
 
 public:
- void handleCurrentESC() throw( UnwindOnUnexpectedCharacter, UnwindOnAllDone);
+  void handleCurrentESC() throw( UnwindOnUnexpectedCharacter, UnwindOnAllDone);
 
 private:
- Transmitter& m_transmitter;
+  Transmitter& m_transmitter;
 };

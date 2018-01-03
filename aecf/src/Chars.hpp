@@ -1,4 +1,4 @@
-/* 
+/*
 
     Copyright : Frank Schwidom, 2017, schwidom@gmx.net
 
@@ -38,6 +38,6 @@
 
 class Chars {
 public:
- static const char esc;
- static const std::string str_esc;
+  static const char esc;
+  static const std::string str_esc;
 };

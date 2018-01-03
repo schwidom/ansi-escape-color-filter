@@ -44,131 +44,131 @@
 
 AecfArguments::AecfArguments(MainArgs mainArgs)
 {
- addOption( {"-h"}, {"--help"}, {"shows the options"});
- addOption( {"-ois"}, {"--output-input-sequences"}, {"outputs the received sequences to stderr"});
- addOption( {"-ic"}, {"--invert-colors"}, {"inverts colors"});
- addOption( {"-otc"}, {"--output-true-color"}, {"outputs true color escapes"});
- addOption( {"-dfg"}, {"--darker-fg"}, {""});
- addOption( {"-dbg"}, {"--darker-bg"}, {""});
- addOption( {"-lfg"}, {"--lighter-fg"}, {""});
- addOption( {"-lbg"}, {"--lighter-bg"}, {""});
- addOption( {"-nb"}, {"--no-bold"}, {"drops CSI 1 m"});
- addOption( {"-nf"}, {"--no-faint"}, {"drops CSI 2 m"});
- addOption( {"-ni"}, {"--no-italic"}, {"drops CSI 3 m"});
- addOption( {"-nu"}, {"--no-underline"}, {"drops CSI 4 m"});
- addOption( {"-nsb"}, {"--no-slow-blink"}, {"drops CSI 5 m"});
- addOption( {"-nrb"}, {"--no-rapid-blink"}, {"drops CSI 6 m"});
- addOption( {"-nbl"}, {"--no-blink"}, {"drops CSI 5 m and CSI 6  m"});
- addOption( {"-gg"}, {"--greyify"}, {"only with --output-true-color"});
- addOption( {"-fbw"}, {"--force-black-white"}, {""});
- addOption( {"-fwb"}, {"--force-white-black"}, {""});
- addOption( {"-dfc"}, {"--drop-foreground-color"}, {""});
- addOption( {"-dbc"}, {"--drop-background-color"}, {""});
- addOption( {"-tbw"}, {"--toggle-black-white"}, {"toggles black white per colorchange (experimental)"});
+  addOption( {"-h"}, {"--help"}, {"shows the options"});
+  addOption( {"-ois"}, {"--output-input-sequences"}, {"outputs the received sequences to stderr"});
+  addOption( {"-ic"}, {"--invert-colors"}, {"inverts colors"});
+  addOption( {"-otc"}, {"--output-true-color"}, {"outputs true color escapes"});
+  addOption( {"-dfg"}, {"--darker-fg"}, {""});
+  addOption( {"-dbg"}, {"--darker-bg"}, {""});
+  addOption( {"-lfg"}, {"--lighter-fg"}, {""});
+  addOption( {"-lbg"}, {"--lighter-bg"}, {""});
+  addOption( {"-nb"}, {"--no-bold"}, {"drops CSI 1 m"});
+  addOption( {"-nf"}, {"--no-faint"}, {"drops CSI 2 m"});
+  addOption( {"-ni"}, {"--no-italic"}, {"drops CSI 3 m"});
+  addOption( {"-nu"}, {"--no-underline"}, {"drops CSI 4 m"});
+  addOption( {"-nsb"}, {"--no-slow-blink"}, {"drops CSI 5 m"});
+  addOption( {"-nrb"}, {"--no-rapid-blink"}, {"drops CSI 6 m"});
+  addOption( {"-nbl"}, {"--no-blink"}, {"drops CSI 5 m and CSI 6  m"});
+  addOption( {"-gg"}, {"--greyify"}, {"only with --output-true-color"});
+  addOption( {"-fbw"}, {"--force-black-white"}, {""});
+  addOption( {"-fwb"}, {"--force-white-black"}, {""});
+  addOption( {"-dfc"}, {"--drop-foreground-color"}, {""});
+  addOption( {"-dbc"}, {"--drop-background-color"}, {""});
+  addOption( {"-tbw"}, {"--toggle-black-white"}, {"toggles black white per colorchange (experimental)"});
 
- m_programName= mainArgs.argv[ 0];
+  m_programName= mainArgs.argv[ 0];
 
- std::copy(mainArgs.argv + 1, mainArgs.argv + mainArgs.argc, std::back_inserter(m_commandLine));
+  std::copy(mainArgs.argv + 1, mainArgs.argv + mainArgs.argc, std::back_inserter(m_commandLine));
 
- for( const auto & value : m_commandLine)
- {
-
-  auto existingOption = optionExists( value);
-
-  if( ! existingOption.exists)
+  for( const auto & value : m_commandLine)
   {
-   throw std::invalid_argument( std::string(__func__) + " : option not registered : >" + value + "<");
-  }
 
-  m_commandLineArguments.insert(existingOption.optionLong);
- }
+    auto existingOption = optionExists( value);
+
+    if( ! existingOption.exists)
+    {
+      throw std::invalid_argument( std::string(__func__) + " : option not registered : >" + value + "<");
+    }
+
+    m_commandLineArguments.insert(existingOption.optionLong);
+  }
 }
 
 bool AecfArguments::hasOption(std::string optionName) const
 {
- return m_commandLineArguments.find({optionName}) != m_commandLineArguments.end();
+  return m_commandLineArguments.find({optionName}) != m_commandLineArguments.end();
 }
 
 std::string AecfArguments::getHelp() const
 {
 
- std::ostringstream oss;
+  std::ostringstream oss;
 
- oss << "" << std::endl;
- oss << "The Ansi Escape Color Filter (aecf), Frank Schwidom, 2017, schwidom@gmx.net " << std::endl;
- oss << "" << std::endl;
- oss << "usage: " << std::endl;
- oss << m_programName << " -h " << std::endl;
- oss << m_programName << " --help " << std::endl;
- oss << " <cursestool> | " << m_programName << " <options> # to change the colored output " << std::endl;
- oss << std::endl;
- oss << m_programName << ", the \"Ansi Escape Color Filter\", has the following options: " << std::endl;
- oss << std::endl;
+  oss << "" << std::endl;
+  oss << "The Ansi Escape Color Filter (aecf), Frank Schwidom, 2017, schwidom@gmx.net " << std::endl;
+  oss << "" << std::endl;
+  oss << "usage: " << std::endl;
+  oss << m_programName << " -h " << std::endl;
+  oss << m_programName << " --help " << std::endl;
+  oss << " <cursestool> | " << m_programName << " <options> # to change the colored output " << std::endl;
+  oss << std::endl;
+  oss << m_programName << ", the \"Ansi Escape Color Filter\", has the following options: " << std::endl;
+  oss << std::endl;
 
- size_t w1= 0, w2= 0, w3= 0;
+  size_t w1= 0, w2= 0, w3= 0;
 
- for( const auto kvp : m_optionsShort2Long)
- {
-  const auto & explanation = m_optionsLong2Explanation.at(kvp.second);
-  w1 = std::max( w1, 0 + kvp.first.value.size());
-  w2 = std::max( w2, 1 + kvp.second.value.size());
-  w3 = std::max( w3, 1 + explanation.value.size());
- }
+  for( const auto kvp : m_optionsShort2Long)
+  {
+    const auto & explanation = m_optionsLong2Explanation.at(kvp.second);
+    w1 = std::max( w1, 0 + kvp.first.value.size());
+    w2 = std::max( w2, 1 + kvp.second.value.size());
+    w3 = std::max( w3, 1 + explanation.value.size());
+  }
 
- for( const auto option : m_options)
- {
-  const auto & kvp = *m_optionsLong2Short.find( option);
-  const auto & explanation = m_optionsLong2Explanation.at( option);
-  oss << std::setw( w1) << kvp.second.value << " |" ;
-  oss << std::setw( w2) << kvp.first.value << " |" ;
-  oss << std::setw( w3) << explanation.value << std::endl;
- }
+  for( const auto option : m_options)
+  {
+    const auto & kvp = *m_optionsLong2Short.find( option);
+    const auto & explanation = m_optionsLong2Explanation.at( option);
+    oss << std::setw( w1) << kvp.second.value << " |" ;
+    oss << std::setw( w2) << kvp.first.value << " |" ;
+    oss << std::setw( w3) << explanation.value << std::endl;
+  }
 
- auto ret = oss.str();
- return ret;
+  auto ret = oss.str();
+  return ret;
 }
 
 AecfArguments::ExistingOption AecfArguments::optionExists(std::string optionName)
 {
 
- ExistingOption ret{ false, {optionName}};
+  ExistingOption ret { false, {optionName}};
 
- {
-  auto it = m_optionsShort2Long.find( OptionShort{ optionName});
-  if( it != m_optionsShort2Long.end() )
   {
-    ret.exists= true;
-    ret.optionLong= it->second;
+    auto it = m_optionsShort2Long.find( OptionShort { optionName});
+    if( it != m_optionsShort2Long.end() )
+    {
+      ret.exists= true;
+      ret.optionLong= it->second;
+    }
   }
- }
 
- if( !ret.exists)
- {
-   auto it = m_optionsLong2Short.find( OptionLong{ optionName});
-   if( it != m_optionsLong2Short.end() )
-   {
-    ret.exists= true;
-   }
- }
+  if( !ret.exists)
+  {
+    auto it = m_optionsLong2Short.find( OptionLong { optionName});
+    if( it != m_optionsLong2Short.end() )
+    {
+      ret.exists= true;
+    }
+  }
 
- return ret;
+  return ret;
 }
 
 void AecfArguments::addOption(AecfArguments::OptionShort optionShort, AecfArguments::OptionLong optionLong, AecfArguments::OptionExplanation optionExplanation)
 {
 
- if( m_optionsShort2Long.find(optionShort) != m_optionsShort2Long.end())
- {
-  throw std::invalid_argument( std::string(__func__) + " : short option already registered : >" + optionShort.value + "<");
- }
+  if( m_optionsShort2Long.find(optionShort) != m_optionsShort2Long.end())
+  {
+    throw std::invalid_argument( std::string(__func__) + " : short option already registered : >" + optionShort.value + "<");
+  }
 
- if( m_optionsLong2Short.find(optionLong) != m_optionsLong2Short.end())
- {
-  throw std::invalid_argument( std::string(__func__) + " : long option already registered : >" + optionLong.value + "<");
- }
+  if( m_optionsLong2Short.find(optionLong) != m_optionsLong2Short.end())
+  {
+    throw std::invalid_argument( std::string(__func__) + " : long option already registered : >" + optionLong.value + "<");
+  }
 
- m_options.push_back( optionLong);
- m_optionsShort2Long.insert(std::make_pair( optionShort, optionLong));
- m_optionsLong2Short.insert(std::make_pair( optionLong, optionShort));
- m_optionsLong2Explanation.insert(std::make_pair( optionLong, optionExplanation));
+  m_options.push_back( optionLong);
+  m_optionsShort2Long.insert(std::make_pair( optionShort, optionLong));
+  m_optionsLong2Short.insert(std::make_pair( optionLong, optionShort));
+  m_optionsLong2Explanation.insert(std::make_pair( optionLong, optionExplanation));
 }

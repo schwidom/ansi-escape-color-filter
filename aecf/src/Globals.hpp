@@ -1,4 +1,4 @@
-/* 
+/*
 
     Copyright : Frank Schwidom, 2017, schwidom@gmx.net
 
@@ -44,17 +44,15 @@
 
 class Globals
 {
-public: 
- static Globals & instance();
+public:
+  static Globals & instance();
 
- void parseCommandLine( MainArgs);
+  void parseCommandLine( MainArgs);
 
- bool hasOption( std::string optionName) const;
-
- const AecfArguments& getAecfArguments() const;
+  const AecfArguments& getAecfArguments() const;
 
 private:
- Globals();
+  Globals();
 
- std::unique_ptr<AecfArguments> m_AecfArguments;
+  std::unique_ptr<AecfArguments> m_AecfArguments;
 };

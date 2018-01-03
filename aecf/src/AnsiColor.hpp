@@ -1,4 +1,4 @@
-/* 
+/*
 
     Copyright : Frank Schwidom, 2017, schwidom@gmx.net
 
@@ -40,59 +40,67 @@ class AnsiColor
 {
 private:
 
- // TODO : class AnsiColorChannel
- uint8_t m_r= 0;
- uint8_t m_g= 0;
- uint8_t m_b= 0;
- 
- void correctBounds();
+// TODO : class AnsiColorChannel
+  uint8_t m_r= 0;
+  uint8_t m_g= 0;
+  uint8_t m_b= 0;
 
- // uint8_t multiplicator_normal = 205;
- uint8_t multiplicator_normal = 255;
- uint8_t multiplicator_bright = 255;
+  void correctBounds();
 
- void setRGB( uint8_t r, uint8_t g, uint8_t b)
- {
-  m_r=r * multiplicator_normal;
-  m_g=g * multiplicator_normal;
-  m_b=b * multiplicator_normal;
- }
+// uint8_t multiplicator_normal = 205;
+  uint8_t multiplicator_normal = 255;
+  uint8_t multiplicator_bright = 255;
 
- struct RGB_1 { uint8_t r; uint8_t g; uint8_t b;}; // TODO : use bool maybe (beware of bright modi)
+  void setRGB( uint8_t r, uint8_t g, uint8_t b)
+  {
+    m_r=r * multiplicator_normal;
+    m_g=g * multiplicator_normal;
+    m_b=b * multiplicator_normal;
+  }
 
- RGB_1 getRGB();
+  struct RGB_1 {
+    uint8_t r;
+    uint8_t g;
+    uint8_t b;
+  }; // TODO : use bool maybe (beware of bright modi)
+
+  RGB_1 getRGB();
 
 public:
- void set7classic( char c);
+  void set7classic( char c);
 
- char get7classic();
- 
- struct RGB_256 { uint8_t r; uint8_t g; uint8_t b;}; // TODO : beware of bright modi
+  char get7classic();
 
- RGB_256 get82truecolor();
+  struct RGB_256 {
+    uint8_t r;
+    uint8_t g;
+    uint8_t b;
+  }; // TODO : beware of bright modi
 
- void darker()
- {
-  m_r = static_cast<uint8_t>( 0.5 * m_r);
-  m_g = static_cast<uint8_t>( 0.5 * m_g);
-  m_b = static_cast<uint8_t>( 0.5 * m_b);
- }
+  RGB_256 get82truecolor();
 
- void lighter()
- {
-  m_r = 255 - static_cast<uint8_t>( 0.5 * (255 - m_r));
-  m_g = 255 - static_cast<uint8_t>( 0.5 * (255 - m_g));
-  m_b = 255 - static_cast<uint8_t>( 0.5 * (255 - m_b));
- }
- 
-/*
- void darkenDarker()
- {
-  auto avg = ( m_r + m_g + m_b / 3);
-  if( avg
- }
-*/
+  void darker()
+  {
+    m_r = static_cast<uint8_t>( 0.5 * m_r);
+    m_g = static_cast<uint8_t>( 0.5 * m_g);
+    m_b = static_cast<uint8_t>( 0.5 * m_b);
+  }
 
- void greyify();
+  void lighter()
+  {
+    m_r = 255 - static_cast<uint8_t>( 0.5 * (255 - m_r));
+    m_g = 255 - static_cast<uint8_t>( 0.5 * (255 - m_g));
+    m_b = 255 - static_cast<uint8_t>( 0.5 * (255 - m_b));
+  }
+
+  /*
+   void darkenDarker()
+   {
+    auto avg = ( m_r + m_g + m_b / 3);
+    if( avg
+   }
+  */
+
+  void greyify();
 
 };

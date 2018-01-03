@@ -1,4 +1,4 @@
-/* 
+/*
 
     Copyright : Frank Schwidom, 2017, schwidom@gmx.net
 
@@ -39,8 +39,8 @@
 class AnsiEscapeState
 {
 public:
- 
- AnsiColor foreground;
- AnsiColor background;
- 
+
+  AnsiColor foreground;
+  AnsiColor background;
+
 };

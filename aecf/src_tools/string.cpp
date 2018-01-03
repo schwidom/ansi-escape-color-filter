@@ -42,9 +42,9 @@ namespace tools {
 void outputStringHex(std::string s)
 {
   for( int i : s)
-    {
-      std::cout << std::hex << "0x" << i << " ";
-    }
+  {
+    std::cout << std::hex << "0x" << i << " ";
+  }
   std::cout << std::endl;
 }
 
@@ -54,9 +54,9 @@ std::string stringAsHex(std::string s)
   std::ostringstream oss;
 
   for( int i : s)
-    {
-      oss << std::hex << "0x" << i << " ";
-    }
+  {
+    oss << std::hex << "0x" << i << " ";
+  }
 
   return oss.str();
 }

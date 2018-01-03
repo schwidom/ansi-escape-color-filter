@@ -48,12 +48,6 @@ void Globals::parseCommandLine( MainArgs mainArgs)
   m_AecfArguments.reset( new AecfArguments(mainArgs));
 }
 
-bool Globals::hasOption(std::string optionName) const
-{
-  if( !m_AecfArguments) throw std::logic_error(std::string(__func__) + " commandline arguments not parsed yet");
-  return m_AecfArguments->hasOption( optionName);
-}
-
 const AecfArguments& Globals::getAecfArguments() const {
   if( !m_AecfArguments) throw std::logic_error(std::string(__func__) + " commandline arguments not parsed yet");
   return *m_AecfArguments;

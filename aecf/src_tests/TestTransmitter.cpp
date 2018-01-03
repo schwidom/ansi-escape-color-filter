@@ -58,40 +58,40 @@ void TestTransmitter::testStringComplete(std::string s, ulong readAheadCount, ul
 
   // while( ! transmitter.eof())
   for( int loops= 0; true; ++loops)
+  {
+
+    if( 0 != loops)
     {
-
-      if( 0 != loops)
-        {
-          readAheadCount= 0;
-          pointCutFromEnd= 0;
-        }
-
-      transmitter.transmitUpToESC();
-      if( transmitter.eof()) break;
-      ++actualESChandlings;
-      for( ulong i= 0; i < readAheadCount; i++)
-        {
-          if( debug) std::cout << "1 " << transmitter.getEscapeStateChars() << std::endl;
-          transmitter.readAhead2EscapeStateChars();
-          if( transmitter.eof()) break;
-          if( debug) std::cout << "2 " << transmitter.getEscapeStateChars() << std::endl;
-          assert( ( i+2) == transmitter.getEscapeStateChars().size());
-        }
-      transmitter.setRefeedPoint(pointCutFromEnd); // von rechts des vorausgelesenen Strings
-      transmitter.state_escape_reset();
-      if( debug) std::cout << "3 " << transmitter.getRefeedChars() << std::endl;
-      if( debug) std::cout << "3 " << transmitter.getEscapeStateChars() << std::endl;
-      transmitter.flushEscapeStateChars();
+      readAheadCount= 0;
+      pointCutFromEnd= 0;
     }
+
+    transmitter.transmitUpToESC();
+    if( transmitter.eof()) break;
+    ++actualESChandlings;
+    for( ulong i= 0; i < readAheadCount; i++)
+    {
+      if( debug) std::cout << "1 " << transmitter.getEscapeStateChars() << std::endl;
+      transmitter.readAhead2EscapeStateChars();
+      if( transmitter.eof()) break;
+      if( debug) std::cout << "2 " << transmitter.getEscapeStateChars() << std::endl;
+      assert( ( i+2) == transmitter.getEscapeStateChars().size());
+    }
+    transmitter.setRefeedPoint(pointCutFromEnd); // von rechts des vorausgelesenen Strings
+    transmitter.state_escape_reset();
+    if( debug) std::cout << "3 " << transmitter.getRefeedChars() << std::endl;
+    if( debug) std::cout << "3 " << transmitter.getEscapeStateChars() << std::endl;
+    transmitter.flushEscapeStateChars();
+  }
 
 
   std::string soss = oss.str();
   assert( s == soss);
 
   if( -1 != expectedESChandlings)
-    {
-      assert( actualESChandlings == expectedESChandlings);
-    }
+  {
+    assert( actualESChandlings == expectedESChandlings);
+  }
 }
 
 void TestTransmitter::test01()

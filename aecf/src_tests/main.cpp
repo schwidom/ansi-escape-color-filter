@@ -1,4 +1,4 @@
-/* 
+/*
 
     Copyright : Frank Schwidom, 2017, schwidom@gmx.net
 
@@ -41,15 +41,15 @@
 int main( int argc, char** argv)
 {
 
- // std::cout << std::unitbuf; // note: for debugging purposes
+// std::cout << std::unitbuf; // note: for debugging purposes
 
- TestTransmitter test_01;
+  TestTransmitter test_01;
 
- test_01.runTest();
+  test_01.runTest();
 
- TestAnsiColor test_02;
- 
- test_02.runTest();
+  TestAnsiColor test_02;
 
- return 0;
+  test_02.runTest();
+
+  return 0;
 }

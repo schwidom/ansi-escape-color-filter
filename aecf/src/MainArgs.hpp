@@ -1,7 +1,7 @@
-/* 
+/*
 
     Copyright : Frank Schwidom, 2017, schwidom@gmx.net
-    
+
     This file is part of the ansi-escape-color-filter software.
 
     This program is free software: you can redistribute it and/or modify
@@ -36,6 +36,6 @@
 
 struct MainArgs
 {
- int argc;
- char** argv;
+  int argc;
+  char** argv;
 };

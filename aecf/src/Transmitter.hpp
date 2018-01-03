@@ -1,4 +1,4 @@
-/* 
+/*
 
     Copyright : Frank Schwidom, 2017, schwidom@gmx.net
 
@@ -40,44 +40,48 @@
 class Transmitter
 {
 private:
- bool debug= false;
+  bool debug= false;
 
 public:
 
- using char_type = char;
+  using char_type = char;
 
- Transmitter( std::istream& istream, std::ostream& ostream);
+  Transmitter( std::istream& istream, std::ostream& ostream);
 
- void flushEscapeStateChars();
+  void flushEscapeStateChars();
 
- void transmitUpToESC();
+  void transmitUpToESC();
 
- bool eof() { return m_Istream.eof() && m_refeedCharsEOF;}
+  bool eof() {
+    return m_Istream.eof() && m_refeedCharsEOF;
+  }
 
- bool state_escape() { return m_state_escape;}
+  bool state_escape() {
+    return m_state_escape;
+  }
 
- void state_escape_reset();
+  void state_escape_reset();
 
- void setRefeedPoint( unsigned long refeedStartPos, bool fromBeginning= false);
+  void setRefeedPoint( unsigned long refeedStartPos, bool fromBeginning= false);
 
- const char_type readAhead2EscapeStateChars();
+  const char_type readAhead2EscapeStateChars();
 
- const std::string& getEscapeStateChars() const;
+  const std::string& getEscapeStateChars() const;
 
- void setEscapeStateChars(std::string escapeStateChars);
+  void setEscapeStateChars(std::string escapeStateChars);
 
- const std::string& getRefeedChars() const;
+  const std::string& getRefeedChars() const;
 
 private:
- 
- char_type get_next_char();
 
- std::istream& m_Istream;
- std::ostream& m_Ostream;
+  char_type get_next_char();
 
- bool m_state_escape;
+  std::istream& m_Istream;
+  std::ostream& m_Ostream;
 
- std::string m_escapeStateChars;
- std::string m_refeedChars; // TODO : prove possible usage of ostringstream 4v1d02nrpn
- bool m_refeedCharsEOF; // TODO : prove possible usage of ostringstream 4v1d02nrpn 
+  bool m_state_escape;
+
+  std::string m_escapeStateChars;
+  std::string m_refeedChars; // TODO : prove possible usage of ostringstream 4v1d02nrpn
+  bool m_refeedCharsEOF; // TODO : prove possible usage of ostringstream 4v1d02nrpn
 };

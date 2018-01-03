@@ -1,4 +1,4 @@
-/* 
+/*
 
     Copyright : Frank Schwidom, 2017, schwidom@gmx.net
 
@@ -37,5 +37,5 @@
 class TestBase
 {
 public:
- virtual void runTest() = 0;
+  virtual void runTest() = 0;
 };
