@@ -34,10 +34,11 @@
 
 #pragma once
 
-#include <map>
-#include <set>
-#include <string>
-#include <vector>
+#include "MainArgs.hpp"
+
+#include "AecfArguments.hpp"
+
+#include <memory>
 
 #include <cstdlib> // exit
 
@@ -46,47 +47,14 @@ class Globals
 public: 
  static Globals & instance();
 
- void parseCommandLine( int argc, char** argv);
+ void parseCommandLine( MainArgs);
 
- bool hasOption( std::string optionName);
+ bool hasOption( std::string optionName) const;
+
+ const AecfArguments& getAecfArguments() const;
 
 private:
  Globals();
 
- struct OptionShort
- {
-  std::string value;
-  bool operator<(const OptionShort & os) const { return value < os.value;}
- };
-
- struct OptionLong
- {
-  std::string value;
-  bool operator<(const OptionLong & os) const { return value < os.value;}
- };
-
- struct OptionExplanation
- {
-  std::string value;
- };
-
- struct ExistingOption
- {
-  bool exists;
-  OptionLong optionLong;
- };
-
- ExistingOption optionExists( std::string optionName);
-
- std::vector<OptionLong> m_options;
- std::map<OptionShort,OptionLong> m_optionsShort2Long;
- std::map<OptionLong,OptionShort> m_optionsLong2Short;
- std::map<OptionLong,OptionExplanation> m_optionsLong2Explanation;
-
- void addOption( OptionShort optionShort, OptionLong optionLong, OptionExplanation optionExplanation= {});
-
- std::string m_programName;
- bool m_parsedCommandLine= false;
- std::vector<std::string> m_commandLine;
- std::set<OptionLong> m_commandLineArguments; 
+ std::unique_ptr<AecfArguments> m_AecfArguments;
 };

@@ -32,17 +32,17 @@
 
 */
 
-#include "../src/Chars.hpp"
+#include "../src/Globals.hpp"
+#include "../src/MainArgs.hpp"
 #include "../src/Parser.hpp"
 #include "../src/Transmitter.hpp"
-#include "../src/Globals.hpp"
 
 #include <iostream>
 
 int main( int argc, char** argv)
 {
 
- Globals::instance().parseCommandLine( argc, argv);
+ Globals::instance().parseCommandLine( MainArgs{ argc, argv});
 
  Transmitter transmitter(std::cin, std::cout);
  Parser parser( transmitter);
@@ -58,4 +58,3 @@ int main( int argc, char** argv)
 
  return 0;
 }
-

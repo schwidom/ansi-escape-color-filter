@@ -1,7 +1,7 @@
-/*
+/* 
 
     Copyright : Frank Schwidom, 2017, schwidom@gmx.net
-
+    
     This file is part of the ansi-escape-color-filter software.
 
     This program is free software: you can redistribute it and/or modify
@@ -32,33 +32,10 @@
 
 */
 
-#include "Globals.hpp"
+#pragma once
 
-#include <stdexcept> // logic_error
-
-Globals &Globals::instance()
+struct MainArgs
 {
-  static Globals ret;
-  return ret;
-}
-
-void Globals::parseCommandLine( MainArgs mainArgs)
-{
-  if( m_AecfArguments) throw std::logic_error(std::string(__func__) + " commandline arguments already parsed");
-  m_AecfArguments.reset( new AecfArguments(mainArgs));
-}
-
-bool Globals::hasOption(std::string optionName) const
-{
-  if( !m_AecfArguments) throw std::logic_error(std::string(__func__) + " commandline arguments not parsed yet");
-  return m_AecfArguments->hasOption( optionName);
-}
-
-const AecfArguments& Globals::getAecfArguments() const {
-  if( !m_AecfArguments) throw std::logic_error(std::string(__func__) + " commandline arguments not parsed yet");
-  return *m_AecfArguments;
-}
-
-Globals::Globals()
-{
-}
+ int argc;
+ char** argv;
+};

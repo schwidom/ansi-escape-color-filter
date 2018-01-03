@@ -1,7 +1,7 @@
-/*
+/* 
 
     Copyright : Frank Schwidom, 2017, schwidom@gmx.net
-
+    
     This file is part of the ansi-escape-color-filter software.
 
     This program is free software: you can redistribute it and/or modify
@@ -32,33 +32,57 @@
 
 */
 
-#include "Globals.hpp"
+#pragma once
 
-#include <stdexcept> // logic_error
+#include "MainArgs.hpp"
 
-Globals &Globals::instance()
+#include <map>
+#include <set>
+#include <string>
+#include <vector>
+
+class AecfArguments
 {
-  static Globals ret;
-  return ret;
-}
+public:
+  AecfArguments( MainArgs mainArgs);
 
-void Globals::parseCommandLine( MainArgs mainArgs)
-{
-  if( m_AecfArguments) throw std::logic_error(std::string(__func__) + " commandline arguments already parsed");
-  m_AecfArguments.reset( new AecfArguments(mainArgs));
-}
+  bool hasOption(std::string optionName) const;
 
-bool Globals::hasOption(std::string optionName) const
-{
-  if( !m_AecfArguments) throw std::logic_error(std::string(__func__) + " commandline arguments not parsed yet");
-  return m_AecfArguments->hasOption( optionName);
-}
+private:
+ struct OptionShort
+ {
+  std::string value;
+  bool operator<(const OptionShort & os) const { return value < os.value;}
+ };
 
-const AecfArguments& Globals::getAecfArguments() const {
-  if( !m_AecfArguments) throw std::logic_error(std::string(__func__) + " commandline arguments not parsed yet");
-  return *m_AecfArguments;
-}
+ struct OptionLong
+ {
+  std::string value;
+  bool operator<(const OptionLong & os) const { return value < os.value;}
+ };
 
-Globals::Globals()
-{
-}
+ struct OptionExplanation
+ {
+  std::string value;
+ };
+
+ struct ExistingOption
+ {
+  bool exists;
+  OptionLong optionLong;
+ };
+
+ ExistingOption optionExists( std::string optionName);
+
+ std::vector<OptionLong> m_options;
+ std::map<OptionShort,OptionLong> m_optionsShort2Long;
+ std::map<OptionLong,OptionShort> m_optionsLong2Short;
+ std::map<OptionLong,OptionExplanation> m_optionsLong2Explanation;
+
+ void addOption( OptionShort optionShort, OptionLong optionLong, OptionExplanation optionExplanation= {});
+
+ std::string m_programName;
+ std::vector<std::string> m_commandLine;
+ std::set<OptionLong> m_commandLineArguments;
+};
+
