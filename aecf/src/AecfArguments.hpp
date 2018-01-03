@@ -48,6 +48,8 @@ public:
 
   bool hasOption(std::string optionName) const;
 
+  std::string getHelp() const;
+
 private:
  struct OptionShort
  {

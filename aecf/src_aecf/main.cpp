@@ -39,10 +39,18 @@
 
 #include <iostream>
 
+#include <cstdlib> // exit
+
 int main( int argc, char** argv)
 {
 
  Globals::instance().parseCommandLine( MainArgs{ argc, argv});
+
+ if( Globals::instance().hasOption( "--help"))
+ {
+  std::cerr << Globals::instance().getAecfArguments().getHelp();
+  exit( 1);
+ }
 
  Transmitter transmitter(std::cin, std::cout);
  Parser parser( transmitter);
