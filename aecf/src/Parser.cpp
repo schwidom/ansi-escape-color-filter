@@ -39,13 +39,14 @@
 
 #include "../src_generated/AecfArgConfig.hpp"
 
-#include <functional>
+#include <algorithm> // transform
 #include <iostream>
-#include <sstream>
+#include <iterator> // back_inserter
+#include <sstream> // ostringstream
 #include <string>
 
-#include <cassert>
-#include <cctype>
+#include <cassert> // assert
+#include <cctype> // isdigit
 
 #include "../src_tools/breakpoint.hpp" // BREAK
 #include "../src_tools/string.hpp" // tools::
@@ -74,7 +75,6 @@ uint Parser::remainingParameters()
   // std::cerr << "remainingParameters " << s << std::endl;
 
   if( 1 == s.size()) return 0;
-
 
   if( 2 == s.size())
   {
@@ -114,7 +114,6 @@ void Parser::handleCurrentLeftBracket() throw( UnwindOnUnexpectedCharacter, Unwi
 
     uint parametersLeft= 0;
 
-
     while( true)
     {
       std::string parameter1= ""; // TODO: rename to command or parameter
@@ -124,7 +123,6 @@ void Parser::handleCurrentLeftBracket() throw( UnwindOnUnexpectedCharacter, Unwi
       {
         m_ansi_command_vector.push_back( {});
       }
-
 
       while( true) // fill first parameter with decimals upto m or ;
       {
@@ -172,7 +170,6 @@ void Parser::handleCurrentLeftBracket() throw( UnwindOnUnexpectedCharacter, Unwi
       }
     }
   }
-
 }
 
 void Parser::handleCurrentESC() throw( UnwindOnUnexpectedCharacter, UnwindOnAllDone)
@@ -216,282 +213,302 @@ void Parser::handleCurrentESC() throw( UnwindOnUnexpectedCharacter, UnwindOnAllD
       }
     }
 
-    if( m_aecfArgConfig.m_toggle_black_white)
-    {
-      for( auto it = m_ansi_command_vector.begin(); it != m_ansi_command_vector.end(); ++it)
+    { // NOTE : old process 1ftf40n0sa
+      if( m_aecfArgConfig.m_toggle_black_white)
       {
-        auto & val = *it;
-
-        if( 2 != val.at( 0).command.size()) continue;
-        // if( '9' == val.at( 0).command.at( 1)) continue;
-
-        auto c0 = val.at( 0).command.at( 0);
-        if( '3' == c0 || '4' == c0)
+        for( auto it = m_ansi_command_vector.begin(); it != m_ansi_command_vector.end(); ++it)
         {
-          if( m_toggleBWisBlackOnWhite)
+          auto & val = *it;
+
+          if( 2 != val.at( 0).command.size()) continue;
+          // if( '9' == val.at( 0).command.at( 1)) continue;
+
+          auto c0 = val.at( 0).command.at( 0);
+          if( '3' == c0 || '4' == c0)
           {
-            val = {{"30"}};
-            ++it;
-            it= m_ansi_command_vector.insert( it, {{"47"}});
+            if( m_toggleBWisBlackOnWhite)
+            {
+              val = {{"30"}};
+              ++it;
+              it= m_ansi_command_vector.insert( it, {{"47"}});
+            }
+            else
+            {
+              val = {{"37"}};
+              ++it;
+              it= m_ansi_command_vector.insert( it, {{"40"}});
+            }
+            // TODO : 90 - 97
+            // TODO : 100 - 107
           }
-          else
+        }
+      }
+
+      if( m_aecfArgConfig.m_no_bold)
+      {
+        for( auto it = m_ansi_command_vector.begin(); it != m_ansi_command_vector.end(); ++it)
+        {
+          const auto & val = *it;
+
+          if( "1" == val.at( 0).command)
           {
-            val = {{"37"}};
-            ++it;
-            it= m_ansi_command_vector.insert( it, {{"40"}});
+            m_ansi_command_vector.erase( it);
+            --it;
           }
-          // TODO : 90 - 97
-          // TODO : 100 - 107
         }
       }
-    }
 
-    if( m_aecfArgConfig.m_no_bold)
-    {
-      for( auto it = m_ansi_command_vector.begin(); it != m_ansi_command_vector.end(); ++it)
+      if( m_aecfArgConfig.m_no_faint)
       {
-        const auto & val = *it;
-
-        if( "1" == val.at( 0).command)
+        for( auto it = m_ansi_command_vector.begin(); it != m_ansi_command_vector.end(); ++it)
         {
-          m_ansi_command_vector.erase( it);
-          --it;
+          const auto & val = *it;
+
+          if( "2" == val.at( 0).command)
+          {
+            m_ansi_command_vector.erase( it);
+            --it;
+          }
         }
       }
-    }
 
-    if( m_aecfArgConfig.m_no_faint)
-    {
-      for( auto it = m_ansi_command_vector.begin(); it != m_ansi_command_vector.end(); ++it)
+      if( m_aecfArgConfig.m_no_italic)
       {
-        const auto & val = *it;
-
-        if( "2" == val.at( 0).command)
+        for( auto it = m_ansi_command_vector.begin(); it != m_ansi_command_vector.end(); ++it)
         {
-          m_ansi_command_vector.erase( it);
-          --it;
+          const auto & val = *it;
+
+          if( "3" == val.at( 0).command)
+          {
+            m_ansi_command_vector.erase( it);
+            --it;
+          }
         }
       }
-    }
 
-    if( m_aecfArgConfig.m_no_italic)
-    {
-      for( auto it = m_ansi_command_vector.begin(); it != m_ansi_command_vector.end(); ++it)
+      if( m_aecfArgConfig.m_no_underline)
       {
-        const auto & val = *it;
-
-        if( "3" == val.at( 0).command)
+        for( auto it = m_ansi_command_vector.begin(); it != m_ansi_command_vector.end(); ++it)
         {
-          m_ansi_command_vector.erase( it);
-          --it;
+          const auto & val = *it;
+
+          if( "4" == val.at( 0).command)
+          {
+            m_ansi_command_vector.erase( it);
+            --it;
+          }
         }
       }
-    }
 
-    if( m_aecfArgConfig.m_no_underline)
-    {
-      for( auto it = m_ansi_command_vector.begin(); it != m_ansi_command_vector.end(); ++it)
+      if( m_NoSlowBlink)
       {
-        const auto & val = *it;
-
-        if( "4" == val.at( 0).command)
+        for( auto it = m_ansi_command_vector.begin(); it != m_ansi_command_vector.end(); ++it)
         {
-          m_ansi_command_vector.erase( it);
-          --it;
+          const auto & val = *it;
+
+          if( "5" == val.at( 0).command)
+          {
+            m_ansi_command_vector.erase( it);
+            --it;
+          }
         }
       }
-    }
 
-    if( m_NoSlowBlink)
-    {
-      for( auto it = m_ansi_command_vector.begin(); it != m_ansi_command_vector.end(); ++it)
+      if( m_NoRapidBlink)
       {
-        const auto & val = *it;
-
-        if( "5" == val.at( 0).command)
+        for( auto it = m_ansi_command_vector.begin(); it != m_ansi_command_vector.end(); ++it)
         {
-          m_ansi_command_vector.erase( it);
-          --it;
+          const auto & val = *it;
+
+          if( "6" == val.at( 0).command)
+          {
+            m_ansi_command_vector.erase( it);
+            --it;
+          }
         }
       }
-    }
 
-    if( m_NoRapidBlink)
-    {
-      for( auto it = m_ansi_command_vector.begin(); it != m_ansi_command_vector.end(); ++it)
+      if( m_aecfArgConfig.m_drop_foreground_color)
       {
-        const auto & val = *it;
-
-        if( "6" == val.at( 0).command)
+        // for( auto & val : m_ansi_command_vector)
+        for( auto it = m_ansi_command_vector.begin(); it != m_ansi_command_vector.end(); ++it)
         {
-          m_ansi_command_vector.erase( it);
-          --it;
+          const auto & val = *it;
+
+          if( 2 != val.at( 0).command.size()) continue;
+          // if( '9' == val.at( 0).command.at( 1)) continue;
+          switch( val.at( 0).command.at( 0))
+          {
+          case '3' :
+            m_ansi_command_vector.erase( it);
+            --it;
+            break;
+            // TODO : 90 - 97
+          }
         }
       }
-    }
 
-    if( m_aecfArgConfig.m_drop_foreground_color)
-    {
-      // for( auto & val : m_ansi_command_vector)
-      for( auto it = m_ansi_command_vector.begin(); it != m_ansi_command_vector.end(); ++it)
+      if( m_aecfArgConfig.m_drop_background_color)
       {
-        const auto & val = *it;
-
-        if( 2 != val.at( 0).command.size()) continue;
-        // if( '9' == val.at( 0).command.at( 1)) continue;
-        switch( val.at( 0).command.at( 0))
+        // for( auto & val : m_ansi_command_vector)
+        for( auto it = m_ansi_command_vector.begin(); it != m_ansi_command_vector.end(); ++it)
         {
-        case '3' :
-          m_ansi_command_vector.erase( it);
-          --it;
-          break;
-          // TODO : 90 - 97
+          const auto & val = *it;
+
+          if( 2 != val.at( 0).command.size()) continue;
+          // if( '9' == val.at( 0).command.at( 1)) continue;
+          switch( val.at( 0).command.at( 0))
+          {
+          case '4' :
+            m_ansi_command_vector.erase( it);
+            --it;
+            break;
+            // TODO : 100 - 107
+          }
         }
       }
-    }
 
-    if( m_aecfArgConfig.m_drop_background_color)
-    {
-      // for( auto & val : m_ansi_command_vector)
-      for( auto it = m_ansi_command_vector.begin(); it != m_ansi_command_vector.end(); ++it)
+      if( m_aecfArgConfig.m_force_black_white)
       {
-        const auto & val = *it;
-
-        if( 2 != val.at( 0).command.size()) continue;
-        // if( '9' == val.at( 0).command.at( 1)) continue;
-        switch( val.at( 0).command.at( 0))
+        for( auto & val : m_ansi_command_vector)
         {
-        case '4' :
-          m_ansi_command_vector.erase( it);
-          --it;
-          break;
-          // TODO : 100 - 107
+          if( 2 != val.at( 0).command.size()) continue;
+          // if( '9' == val.at( 0).command.at( 1)) continue;
+          switch( val.at( 0).command.at( 0))
+          {
+          case '3' :
+            val= {{"30"}};
+            break;
+          case '4' :
+            val= {{"47"}};
+            break;
+          }
         }
       }
-    }
 
-    if( m_aecfArgConfig.m_force_black_white)
-    {
-      for( auto & val : m_ansi_command_vector)
+      if( m_aecfArgConfig.m_force_white_black)
       {
-        if( 2 != val.at( 0).command.size()) continue;
-        // if( '9' == val.at( 0).command.at( 1)) continue;
-        switch( val.at( 0).command.at( 0))
+        for( auto & val : m_ansi_command_vector)
         {
-        case '3' :
-          val= {{"30"}};
-          break;
-        case '4' :
-          val= {{"47"}};
-          break;
+          if( 2 != val.at( 0).command.size()) continue;
+          // if( '9' == val.at( 0).command.at( 1)) continue;
+          switch( val.at( 0).command.at( 0))
+          {
+          case '3' :
+            val= {{"37"}};
+            break;
+          case '4' :
+            val= {{"40"}};
+            break;
+          }
         }
       }
-    }
 
-    if( m_aecfArgConfig.m_force_white_black)
-    {
-      for( auto & val : m_ansi_command_vector)
+      if( m_aecfArgConfig.m_output_true_color)
       {
-        if( 2 != val.at( 0).command.size()) continue;
-        // if( '9' == val.at( 0).command.at( 1)) continue;
-        switch( val.at( 0).command.at( 0))
-        {
-        case '3' :
-          val= {{"37"}};
-          break;
-        case '4' :
-          val= {{"40"}};
-          break;
-        }
-      }
-    }
-
-    if( m_aecfArgConfig.m_output_true_color)
-    {
-      for( auto & val : m_ansi_command_vector)
-      {
-
-        if( 2 != val.at( 0).command.size()) continue;
-
-        char_type c0 = val.at( 0).command.at( 0);
-        char_type c1 = val.at( 0).command.at( 1);
-
-        AnsiColor * ac = nullptr;
-
-        switch( c0)
-        {
-        case '3' :
-          ac = &m_AnsiEscapeState.foreground;
-          break;
-        case '4' :
-          ac = &m_AnsiEscapeState.background;
-          break;
-        }
-
-        bool is_set = false;
-
-        if( '0' <= c1 && c1 <='7')
-        {
-          ac->set7classic( c1);
-          is_set = true;
-        }
-
+        for( auto & val : m_ansi_command_vector)
         {
 
-          bool darker;
-          bool lighter;
+          if( 2 != val.at( 0).command.size()) continue;
+
+          char_type c0 = val.at( 0).command.at( 0);
+          char_type c1 = val.at( 0).command.at( 1);
+
+          AnsiColor * ac = nullptr;
 
           switch( c0)
           {
           case '3' :
-            darker = m_aecfArgConfig.m_darker_fg;
-            lighter = m_aecfArgConfig.m_lighter_fg;
+            ac = &m_AnsiEscapeState.foreground;
             break;
           case '4' :
-            darker = m_aecfArgConfig.m_darker_bg;
-            lighter = m_aecfArgConfig.m_lighter_bg;
+            ac = &m_AnsiEscapeState.background;
             break;
           }
 
-          if( darker) ac->darker();
-          if( lighter) ac->lighter();
-        }
+          bool is_set = false;
 
-        if( m_aecfArgConfig.m_greyify)
-        {
-          ac->greyify();
-        }
+          if( '0' <= c1 && c1 <='7')
+          {
+            ac->set7classic( c1);
+            is_set = true;
+          }
 
-        if( is_set)
-        {
-          auto rgb = ac->get82truecolor();
+          {
 
-          using namespace tools;
+            bool darker;
+            bool lighter;
 
-          val = { {std::string({ c0, '8'})}, {"2"}, {int2string(rgb.r)}, {int2string(rgb.g)}, {int2string(rgb.b)}};
+            switch( c0)
+            {
+            case '3' :
+              darker = m_aecfArgConfig.m_darker_fg;
+              lighter = m_aecfArgConfig.m_lighter_fg;
+              break;
+            case '4' :
+              darker = m_aecfArgConfig.m_darker_bg;
+              lighter = m_aecfArgConfig.m_lighter_bg;
+              break;
+            }
+
+            if( darker) ac->darker();
+            if( lighter) ac->lighter();
+          }
+
+          if( m_aecfArgConfig.m_greyify)
+          {
+            ac->greyify();
+          }
+
+          if( is_set)
+          {
+            auto rgb = ac->get82truecolor();
+
+            using namespace tools;
+
+            val = { {std::string({ c0, '8'})}, {"2"}, {int2string(rgb.r)}, {int2string(rgb.g)}, {int2string(rgb.b)}};
+          }
         }
       }
-    }
 
-    if( m_aecfArgConfig.m_invert_colors)
-    {
-      for( auto & val : m_ansi_command_vector)
+      if( m_aecfArgConfig.m_invert_colors)
       {
-        // throw std::invalid_argument( "1");
-        if( 2 != val.at( 0).command.size()) continue;
-        switch( val.at( 0).command.at( 0))
+        for( auto & val : m_ansi_command_vector)
         {
-        case '3' :
-          val.at(0).command.at( 0)= '4';
-          break;
-        case '4' :
-          val.at(0).command.at( 0)= '3';
-          break;
+          // throw std::invalid_argument( "1");
+          if( 2 != val.at( 0).command.size()) continue;
+          switch( val.at( 0).command.at( 0))
+          {
+          case '3' :
+            val.at(0).command.at( 0)= '4';
+            break;
+          case '4' :
+            val.at(0).command.at( 0)= '3';
+            break;
+          }
         }
       }
+
     }
 
-    if( ! m_ansi_command_vector.empty())
+    using VectorOfAnsiCommandCells = decltype(m_ansi_command_vector)::value_type;
+
+    struct AnsiCommandInfo {
+      VectorOfAnsiCommandCells vectorOfAnsiCommandCells;
+    };
+
+    std::vector<AnsiCommandInfo> vectorOfAnsiCommands;
+
+    std::transform( m_ansi_command_vector.begin(), m_ansi_command_vector.end(),
+    std::back_inserter(vectorOfAnsiCommands), []( VectorOfAnsiCommandCells value) {
+      return AnsiCommandInfo {value};
+    });
+
+    { // NOTE : new process 1ftf40n0sa
+      // WEITERBEI
+    }
+
+    if( ! vectorOfAnsiCommands.empty())
     {
       // assert( ! m_ansi_command_vector.empty());
 
@@ -501,10 +518,9 @@ void Parser::handleCurrentESC() throw( UnwindOnUnexpectedCharacter, UnwindOnAllD
 
       bool butFirstCell = false; // [cell;cell;...m
 
-      for( auto itAnsiCommand = m_ansi_command_vector.cbegin(); itAnsiCommand != m_ansi_command_vector.cend(); ++itAnsiCommand)
+      for( const auto & ansiCommand : vectorOfAnsiCommands)
       {
-        const auto ansiCommandCell= *itAnsiCommand;
-        for( auto itAnsiCommandCell= ansiCommandCell.cbegin(); itAnsiCommandCell != ansiCommandCell.cend(); ++itAnsiCommandCell)
+        for( const auto & ansiCommandCell : ansiCommand.vectorOfAnsiCommandCells)
         {
           if( butFirstCell) {
             oss << ';';
@@ -512,7 +528,7 @@ void Parser::handleCurrentESC() throw( UnwindOnUnexpectedCharacter, UnwindOnAllD
           else {
             butFirstCell= true;
           }
-          oss << itAnsiCommandCell->command;
+          oss << ansiCommandCell.command;
         }
       }
 
@@ -527,7 +543,6 @@ void Parser::handleCurrentESC() throw( UnwindOnUnexpectedCharacter, UnwindOnAllD
 
       m_transmitter.setEscapeStateChars("");
     }
-
   }
 
   if( 0) // NOTE: experimental

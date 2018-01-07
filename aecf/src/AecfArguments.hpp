@@ -51,12 +51,15 @@ public:
 
   std::string getHelp() const;
 
+  const std::vector<AecfArgumentMap::OptionLong> getOptions() const;
+
 private:
 
   AecfArgumentMap aecfArgumentMap;
 
   std::string m_programName;
-  std::vector<std::string> m_arguments;
+  std::vector<std::string> m_argv; //!< all given strings on program invocation
+  std::vector<AecfArgumentMap::OptionLong> m_options;
   std::set<AecfArgumentMap::OptionLong> m_optionSet;
 
 };

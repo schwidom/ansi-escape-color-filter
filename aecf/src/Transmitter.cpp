@@ -41,14 +41,6 @@
 
 #include <stdexcept> // invalid_argument
 
-#include <cassert>
-#include <csignal>
-
-extern "C" {
-#include <unistd.h>
-}
-
-
 Transmitter::Transmitter(std::istream &istream, std::ostream &ostream)
   : m_Istream(istream)
   , m_Ostream(ostream)
@@ -176,7 +168,7 @@ void Transmitter::setEscapeStateChars(std::string escapeStateChars)
   m_escapeStateChars= escapeStateChars;
 }
 
-const std::string& Transmitter::getRefeedChars() const // 4 debug purposes
+const std::string& Transmitter::getRefeedChars() const // NOTE: 4 debug purposes
 {
   return m_refeedChars;
 }

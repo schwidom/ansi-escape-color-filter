@@ -32,6 +32,7 @@ add_custom_command( OUTPUT ${SRC_GENERATED_LIST}
  DEPENDS generate_arguments.bin
  COMMAND mkdir -p aecf/src_generated
  COMMAND aecf-debug/generate_arguments.bin
+ COMMAND astyle ${SRC_GENERATED_LIST}
  WORKING_DIRECTORY ..)
 
 set_source_files_properties( ${SRC_GENERATED_LIST}

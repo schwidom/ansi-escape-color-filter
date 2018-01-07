@@ -45,9 +45,9 @@ AecfArguments::AecfArguments(MainArgs mainArgs)
 {
   m_programName= mainArgs.argv[ 0];
 
-  std::copy(mainArgs.argv + 1, mainArgs.argv + mainArgs.argc, std::back_inserter(m_arguments));
+  std::copy(mainArgs.argv + 1, mainArgs.argv + mainArgs.argc, std::back_inserter(m_argv));
 
-  for( const auto & value : m_arguments)
+  for( const auto & value : m_argv)
   {
 
     auto existingOption = aecfArgumentMap.optionExists( value);
@@ -57,6 +57,7 @@ AecfArguments::AecfArguments(MainArgs mainArgs)
       throw std::invalid_argument( std::string(__func__) + " : option not registered : >" + value + "<");
     }
 
+    m_options.push_back(existingOption.optionLong);
     m_optionSet.insert(existingOption.optionLong);
   }
 }
@@ -86,6 +87,11 @@ std::string AecfArguments::getHelp() const
 
   auto ret = oss.str();
   return ret;
+}
+
+const std::vector<AecfArgumentMap::OptionLong> AecfArguments::getOptions() const
+{
+  return m_options;
 }
 
 

@@ -94,7 +94,7 @@ int main( int argc, char** argv)
 
     // creating structure forward declaration
 
-      ofs << "struct AecfArgConfig; " << std::endl;
+    ofs << "struct AecfArgConfig; " << std::endl;
   }
 
   {
@@ -108,14 +108,14 @@ int main( int argc, char** argv)
 
     // creating structure
 
-      ofs << "struct AecfArgConfig {" << std::endl;
-      for( const auto & value : aecfArgumentMap.getOptions())
-      {
-        ofs << "  bool " << convert( value.value) << ";" << std::endl;
-      }
-      ofs << "};" << std::endl;
-      ofs << std::endl;
-      ofs << "AecfArgConfig createAecfArgConfig(const AecfArguments & aecfArguments);" << std::endl;
+    ofs << "struct AecfArgConfig {" << std::endl;
+    for( const auto & value : aecfArgumentMap.getOptions())
+    {
+      ofs << "  bool " << convert( value.value) << ";" << std::endl;
+    }
+    ofs << "};" << std::endl;
+    ofs << std::endl;
+    ofs << "AecfArgConfig createAecfArgConfig(const AecfArguments & aecfArguments);" << std::endl;
   }
 
 
@@ -134,9 +134,7 @@ int main( int argc, char** argv)
     ofs << "AecfArgConfig{" << std::endl;
     for( const auto & value : aecfArgumentMap.getOptions())
     {
-
       ofs << fby.next() << "aecfArguments.hasOption(\"" << value.value << "\")" << std::endl;
-
     }
     ofs << "};" << std::endl;
     ofs << "}" << std::endl;
