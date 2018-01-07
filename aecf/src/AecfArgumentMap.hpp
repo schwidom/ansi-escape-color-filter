@@ -34,30 +34,63 @@
 
 #pragma once
 
-#include "AecfArgumentMap.hpp"
-#include "MainArgs.hpp"
-
-#include <map>
-#include <set>
 #include <string>
 #include <vector>
+#include <map>
 
-class AecfArguments
+class AecfArgumentMap
 {
 public:
-  AecfArguments( MainArgs mainArgs);
 
-  bool hasOption(std::string optionName) const;
+  AecfArgumentMap();
 
-  std::string getHelp() const;
+  struct OptionLong
+  {
+    std::string value;
+    bool operator<(const OptionLong & os) const {
+      return value < os.value;
+    }
+  };
 
 private:
 
-  AecfArgumentMap aecfArgumentMap;
+  struct ExistingOption
+  {
+    bool exists;
+    OptionLong optionLong;
+  };
 
-  std::string m_programName;
-  std::vector<std::string> m_arguments;
-  std::set<AecfArgumentMap::OptionLong> m_optionSet;
+
+public:
+
+
+  ExistingOption optionExists( std::string optionName); // TODO : use OptionLong
+
+  std::string getHelp() const;
+
+  const std::vector<OptionLong> & getOptions() const;
+
+private:
+
+  struct OptionShort
+  {
+    std::string value;
+    bool operator<(const OptionShort & os) const {
+      return value < os.value;
+    }
+  };
+
+  struct OptionExplanation
+  {
+    std::string value;
+  };
+
+  void addOption( OptionShort optionShort, OptionLong optionLong, OptionExplanation optionExplanation= {});
+
+  std::vector<OptionLong> m_options;
+  std::map<OptionShort,OptionLong> m_optionsShort2Long;
+  std::map<OptionLong,OptionShort> m_optionsLong2Short;
+  std::map<OptionLong,OptionExplanation> m_optionsLong2Explanation;
 
 };
 

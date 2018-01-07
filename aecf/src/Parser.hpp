@@ -37,6 +37,8 @@
 #include "AnsiEscapeState.hpp"
 #include "Transmitter.hpp"
 
+#include "../src_generated/AecfArgConfig.hpp"
+
 #include <vector>
 
 class Parser
@@ -60,24 +62,7 @@ private:
   {
   };
 
-  bool m_outputInputSequences;
-  bool m_invertColors;
-  bool m_outputTrueColor;
-  bool m_dfg;
-  bool m_dbg;
-  bool m_lfg;
-  bool m_lbg;
-  bool m_greyify;
-  bool m_forceBW;
-  bool m_forceWB;
-  bool m_dropFG;
-  bool m_dropBG;
-  bool m_toggleBW;
   bool m_toggleBWisBlackOnWhite= true;
-  bool m_NoBold;
-  bool m_NoFaint;
-  bool m_NoItalic;
-  bool m_NoUnderline;
   bool m_NoSlowBlink;
   bool m_NoRapidBlink;
 
@@ -98,4 +83,6 @@ public:
 
 private:
   Transmitter& m_transmitter;
+
+  const AecfArgConfig m_aecfArgConfig;
 };

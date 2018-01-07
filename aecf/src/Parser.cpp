@@ -37,6 +37,8 @@
 #include "Chars.hpp"
 #include "Globals.hpp"
 
+#include "../src_generated/AecfArgConfig.hpp"
+
 #include <functional>
 #include <iostream>
 #include <sstream>
@@ -50,34 +52,13 @@
 
 Parser::Parser(Transmitter &transmitter)
   : m_transmitter(transmitter)
+  , m_aecfArgConfig(createAecfArgConfig(Globals::instance().getAecfArguments()))
 {
 
-  auto hasOption= [](std::string option) -> bool {
-    return Globals::instance().getAecfArguments().hasOption( option);
-  };
+  m_NoSlowBlink  = m_aecfArgConfig.m_no_slow_blink;
+  m_NoRapidBlink = m_aecfArgConfig.m_no_rapid_blink;
 
-  m_outputInputSequences= hasOption( "--output-input-sequences");
-  m_outputTrueColor= hasOption( "--output-true-color");
-  m_invertColors= hasOption( "--invert-colors");
-  m_dfg= hasOption( "--darker-fg");
-  m_dbg= hasOption( "--darker-bg");
-  m_lfg= hasOption( "--lighter-fg");
-  m_lbg= hasOption( "--lighter-bg");
-  m_greyify= hasOption( "--greyify");
-  m_forceBW= hasOption( "--force-black-white");
-  m_forceWB= hasOption( "--force-white-black");
-  m_dropFG= hasOption( "--drop-foreground-color");
-  m_dropBG= hasOption( "--drop-background-color");
-  m_toggleBW= hasOption( "--toggle-black-white");
-
-  m_NoBold       = hasOption( "--no-bold");
-  m_NoFaint      = hasOption( "--no-faint");
-  m_NoItalic     = hasOption( "--no-italic");
-  m_NoUnderline  = hasOption( "--no-underline");
-  m_NoSlowBlink  = hasOption( "--no-slow-blink");
-  m_NoRapidBlink = hasOption( "--no-rapid-blink");
-
-  if( hasOption( "--no-blink"))
+  if( m_aecfArgConfig.m_no_blink)
   {
     m_NoSlowBlink = true;
     m_NoRapidBlink = true;
@@ -224,7 +205,7 @@ void Parser::handleCurrentESC() throw( UnwindOnUnexpectedCharacter, UnwindOnAllD
 
     // die Filter werden in der Reihenfolge der Kommandozeilenangabe angewendet
 
-    if( m_outputInputSequences)
+    if( m_aecfArgConfig.m_output_input_sequences)
     {
       std::cerr << "AnsiCommands" << std::endl;
 
@@ -235,7 +216,7 @@ void Parser::handleCurrentESC() throw( UnwindOnUnexpectedCharacter, UnwindOnAllD
       }
     }
 
-    if( m_toggleBW)
+    if( m_aecfArgConfig.m_toggle_black_white)
     {
       for( auto it = m_ansi_command_vector.begin(); it != m_ansi_command_vector.end(); ++it)
       {
@@ -265,7 +246,7 @@ void Parser::handleCurrentESC() throw( UnwindOnUnexpectedCharacter, UnwindOnAllD
       }
     }
 
-    if( m_NoBold)
+    if( m_aecfArgConfig.m_no_bold)
     {
       for( auto it = m_ansi_command_vector.begin(); it != m_ansi_command_vector.end(); ++it)
       {
@@ -279,7 +260,7 @@ void Parser::handleCurrentESC() throw( UnwindOnUnexpectedCharacter, UnwindOnAllD
       }
     }
 
-    if( m_NoFaint)
+    if( m_aecfArgConfig.m_no_faint)
     {
       for( auto it = m_ansi_command_vector.begin(); it != m_ansi_command_vector.end(); ++it)
       {
@@ -293,7 +274,7 @@ void Parser::handleCurrentESC() throw( UnwindOnUnexpectedCharacter, UnwindOnAllD
       }
     }
 
-    if( m_NoItalic)
+    if( m_aecfArgConfig.m_no_italic)
     {
       for( auto it = m_ansi_command_vector.begin(); it != m_ansi_command_vector.end(); ++it)
       {
@@ -307,7 +288,7 @@ void Parser::handleCurrentESC() throw( UnwindOnUnexpectedCharacter, UnwindOnAllD
       }
     }
 
-    if( m_NoUnderline)
+    if( m_aecfArgConfig.m_no_underline)
     {
       for( auto it = m_ansi_command_vector.begin(); it != m_ansi_command_vector.end(); ++it)
       {
@@ -349,7 +330,7 @@ void Parser::handleCurrentESC() throw( UnwindOnUnexpectedCharacter, UnwindOnAllD
       }
     }
 
-    if( m_dropFG)
+    if( m_aecfArgConfig.m_drop_foreground_color)
     {
       // for( auto & val : m_ansi_command_vector)
       for( auto it = m_ansi_command_vector.begin(); it != m_ansi_command_vector.end(); ++it)
@@ -369,7 +350,7 @@ void Parser::handleCurrentESC() throw( UnwindOnUnexpectedCharacter, UnwindOnAllD
       }
     }
 
-    if( m_dropBG)
+    if( m_aecfArgConfig.m_drop_background_color)
     {
       // for( auto & val : m_ansi_command_vector)
       for( auto it = m_ansi_command_vector.begin(); it != m_ansi_command_vector.end(); ++it)
@@ -389,7 +370,7 @@ void Parser::handleCurrentESC() throw( UnwindOnUnexpectedCharacter, UnwindOnAllD
       }
     }
 
-    if( m_forceBW)
+    if( m_aecfArgConfig.m_force_black_white)
     {
       for( auto & val : m_ansi_command_vector)
       {
@@ -407,7 +388,7 @@ void Parser::handleCurrentESC() throw( UnwindOnUnexpectedCharacter, UnwindOnAllD
       }
     }
 
-    if( m_forceWB)
+    if( m_aecfArgConfig.m_force_white_black)
     {
       for( auto & val : m_ansi_command_vector)
       {
@@ -425,7 +406,7 @@ void Parser::handleCurrentESC() throw( UnwindOnUnexpectedCharacter, UnwindOnAllD
       }
     }
 
-    if( m_outputTrueColor)
+    if( m_aecfArgConfig.m_output_true_color)
     {
       for( auto & val : m_ansi_command_vector)
       {
@@ -463,12 +444,12 @@ void Parser::handleCurrentESC() throw( UnwindOnUnexpectedCharacter, UnwindOnAllD
           switch( c0)
           {
           case '3' :
-            darker = m_dfg;
-            lighter = m_lfg;
+            darker = m_aecfArgConfig.m_darker_fg;
+            lighter = m_aecfArgConfig.m_lighter_fg;
             break;
           case '4' :
-            darker = m_dbg;
-            lighter = m_lbg;
+            darker = m_aecfArgConfig.m_darker_bg;
+            lighter = m_aecfArgConfig.m_lighter_bg;
             break;
           }
 
@@ -476,7 +457,7 @@ void Parser::handleCurrentESC() throw( UnwindOnUnexpectedCharacter, UnwindOnAllD
           if( lighter) ac->lighter();
         }
 
-        if( m_greyify)
+        if( m_aecfArgConfig.m_greyify)
         {
           ac->greyify();
         }
@@ -492,7 +473,7 @@ void Parser::handleCurrentESC() throw( UnwindOnUnexpectedCharacter, UnwindOnAllD
       }
     }
 
-    if( m_invertColors)
+    if( m_aecfArgConfig.m_invert_colors)
     {
       for( auto & val : m_ansi_command_vector)
       {
@@ -542,7 +523,7 @@ void Parser::handleCurrentESC() throw( UnwindOnUnexpectedCharacter, UnwindOnAllD
     }
     else // m_ansi_command_vector.empty()
     {
-      assert( m_dropFG || m_dropBG || m_NoBold || m_NoFaint || m_NoItalic || m_NoUnderline || m_NoSlowBlink || m_NoRapidBlink );
+      assert( m_aecfArgConfig.m_drop_foreground_color || m_aecfArgConfig.m_drop_background_color || m_aecfArgConfig.m_no_bold || m_aecfArgConfig.m_no_faint || m_aecfArgConfig.m_no_italic || m_aecfArgConfig.m_no_underline || m_NoSlowBlink || m_NoRapidBlink );
 
       m_transmitter.setEscapeStateChars("");
     }
@@ -555,7 +536,7 @@ void Parser::handleCurrentESC() throw( UnwindOnUnexpectedCharacter, UnwindOnAllD
     m_transmitter.setRefeedPoint( 1);
   }
 
-  if( m_toggleBW) // NOTE only when sequence follows non escape
+  if( m_aecfArgConfig.m_toggle_black_white) // NOTE only when sequence follows non escape
   {
     m_transmitter.readAhead2EscapeStateChars();
     if( Chars::esc != m_transmitter.getEscapeStateChars().back())
