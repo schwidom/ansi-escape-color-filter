@@ -24,22 +24,8 @@ add_custom_target(tags
  COMMAND ctags -R --c++-kinds=+p --fields=+iaS --extra=+q  ${CMAKE_CURRENT_SOURCE_DIR}
  WORKING_DIRECTORY ..)
 
-# add_custom_target( generate_arguments
-#  COMMAND
-
 add_executable( generate_arguments.bin ${SRC_GEN_ARG_LIST} ${SRC_TOOLS_LIST} src/AecfArgumentMap.cpp)
 
-# add_custom_target( generate_arguments ALL
-#  DEPENDS generate_arguments.bin
-#  COMMAND mkdir -p aecf/src_generated
-#  COMMAND aecf-debug/generate_arguments.bin
-#  WORKING_DIRECTORY ..)
-# 
-# # aux_source_directory( src_generated SRC_GENERATED_LIST)
-# set( SRC_GENERATED_LIST src_generated/AecfArgConfig.hpp src_generated/AecfArgConfig.fpp src_generated/AecfArgConfig.cpp)
-# cmake_print_variables( ${SRC_GENERATED_LIST})
-
-# set( SRC_GENERATED_LIST src_generated/AecfArgConfig.hpp src_generated/AecfArgConfig.fpp src_generated/AecfArgConfig.cpp)
 set( SRC_GENERATED_LIST ${CMAKE_CURRENT_SOURCE_DIR}/src_generated/AecfArgConfig.hpp ${CMAKE_CURRENT_SOURCE_DIR}/src_generated/AecfArgConfig.fpp ${CMAKE_CURRENT_SOURCE_DIR}/src_generated/AecfArgConfig.cpp)
 
 add_custom_command( OUTPUT ${SRC_GENERATED_LIST}
@@ -48,7 +34,7 @@ add_custom_command( OUTPUT ${SRC_GENERATED_LIST}
  COMMAND aecf-debug/generate_arguments.bin
  WORKING_DIRECTORY ..)
 
-set_source_files_properties( ${SRC_GENERATED_LIST} 
+set_source_files_properties( ${SRC_GENERATED_LIST}
  PROPERTIES GENERATED TRUE
 )
 
